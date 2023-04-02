@@ -1,0 +1,1 @@
+String kAppName = "Copy-n-Sync";
