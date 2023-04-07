@@ -9,9 +9,10 @@ import 'package:copy_n_sync/ui/views/authentication/login/login.dart' as _i3;
 import 'package:copy_n_sync/ui/views/authentication/sign_up/signup.dart' as _i4;
 import 'package:copy_n_sync/ui/views/onboarding/onboarding.dart' as _i2;
 import 'package:flutter/cupertino.dart' as _i5;
+import 'package:flutter/material.dart' as _i6;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i6;
+import 'package:stacked_services/stacked_services.dart' as _i7;
 
 class Routes {
   static const onboardingView = '/';
@@ -51,15 +52,21 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i3.LoginView: (data) {
+      final args = data.getArgs<LoginViewArguments>(
+        orElse: () => const LoginViewArguments(),
+      );
       return _i5.CupertinoPageRoute<dynamic>(
-        builder: (context) => const _i3.LoginView(),
+        builder: (context) => _i3.LoginView(key: args.key),
         settings: data,
         maintainState: false,
       );
     },
     _i4.SignUpView: (data) {
+      final args = data.getArgs<SignUpViewArguments>(
+        orElse: () => const SignUpViewArguments(),
+      );
       return _i5.CupertinoPageRoute<dynamic>(
-        builder: (context) => const _i4.SignUpView(),
+        builder: (context) => _i4.SignUpView(key: args.key),
         settings: data,
         maintainState: false,
       );
@@ -72,7 +79,29 @@ class StackedRouter extends _i1.RouterBase {
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
 }
 
-extension NavigatorStateExtension on _i6.NavigationService {
+class LoginViewArguments {
+  const LoginViewArguments({this.key});
+
+  final _i6.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+}
+
+class SignUpViewArguments {
+  const SignUpViewArguments({this.key});
+
+  final _i6.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+}
+
+extension NavigatorStateExtension on _i7.NavigationService {
   Future<dynamic> navigateToOnboardingView([
     int? routerId,
     bool preventDuplicates = true,
@@ -87,28 +116,32 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLoginView([
+  Future<dynamic> navigateToLoginView({
+    _i6.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.loginView,
+        arguments: LoginViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> navigateToSignUpView([
+  Future<dynamic> navigateToSignUpView({
+    _i6.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.signUpView,
+        arguments: SignUpViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -129,28 +162,32 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLoginView([
+  Future<dynamic> replaceWithLoginView({
+    _i6.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.loginView,
+        arguments: LoginViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
         transition: transition);
   }
 
-  Future<dynamic> replaceWithSignUpView([
+  Future<dynamic> replaceWithSignUpView({
+    _i6.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.signUpView,
+        arguments: SignUpViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

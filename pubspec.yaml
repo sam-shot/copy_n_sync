@@ -12,6 +12,7 @@ dependencies:
   
   # ui
   google_fonts: ^3.0.1
+  rive: ^0.10.3
 
   # api
   dio: 4.0.6

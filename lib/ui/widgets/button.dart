@@ -1,4 +1,6 @@
+import 'package:copy_n_sync/ui/shared/assets.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
+import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -8,12 +10,14 @@ class CustomButton extends StatelessWidget {
       required this.ontap,
       this.isPrimary = true,
       this.isOutlined = false,
+      this.hasImage = false,
       super.key});
 
   bool isOutlined;
   String text;
   Function() ontap;
   bool isPrimary;
+  bool hasImage;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,15 @@ class CustomButton extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: isPrimary ? kPrimaryColor : kSecondaryColor,
+            color: isOutlined
+                ? kWhite
+                : isPrimary
+                    ? kPrimaryColor
+                    : kSecondaryColor,
             borderRadius: BorderRadius.circular(10),
+            border: isOutlined
+                ? Border.all(color: kSecondaryColor, width: 2)
+                : Border(),
             boxShadow: [
               BoxShadow(
                   color: isPrimary
@@ -34,15 +45,45 @@ class CustomButton extends StatelessWidget {
                   offset: const Offset(0, 5))
             ]),
         child: Center(
-            child: isPrimary
-                ? Text(
-                    text,
-                    style: h4B.copyWith(color: kSecondaryColor),
+            child: hasImage
+                ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AppAsset.googleIcon,
+                        width: 24,
+                      ),
+                      S.width(10),
+                      isOutlined
+                          ? Text(
+                              text,
+                              style: h4B.copyWith(color: kSecondaryColor),
+                            )
+                          : isPrimary
+                              ? Text(
+                                  text,
+                                  style: h4B.copyWith(color: kSecondaryColor),
+                                )
+                              : Text(
+                                  text,
+                                  style: h4B.copyWith(color: kWhite),
+                                )
+                    ],
                   )
-                : Text(
-                    text,
-                    style: h4B.copyWith(color: kWhite),
-                  )),
+                : isOutlined
+                    ? Text(
+                        text,
+                        style: h4B.copyWith(color: kSecondaryColor),
+                      )
+                    : isPrimary
+                        ? Text(
+                            text,
+                            style: h4B.copyWith(color: kSecondaryColor),
+                          )
+                        : Text(
+                            text,
+                            style: h4B.copyWith(color: kWhite),
+                          )),
       ),
     );
   }
