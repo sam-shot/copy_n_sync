@@ -2,6 +2,7 @@ import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/app/app.router.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -44,11 +45,13 @@ class OnboardingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void buttonClick() {
+  void buttonClick() async{
     controller.nextPage(
         duration: Duration(milliseconds: 500), curve: Curves.easeIn);
     notifyListeners();
     if (_currentIndex > 1) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool("onboarded", true);
       _navigation.navigateTo(Routes.loginView);
     }
   }

@@ -27,7 +27,7 @@ class SignUpViewModel extends FormViewModel {
           username: usernameValue!,
           email: emailValue!,
           password: passwordValue!);
-      Register data = Register.fromJson(response.data);
+      Register data = Register.fromJson(response);
       if (data.status == "200") {
         status = data.message!;
 
@@ -39,7 +39,6 @@ class SignUpViewModel extends FormViewModel {
         notifyListeners();
       }
     }
-    await Future.delayed(Duration(milliseconds: 200));
     SetLoading(false);
   }
 

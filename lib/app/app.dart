@@ -1,22 +1,36 @@
 import 'package:copy_n_sync/core/services/api_service.dart';
 import 'package:copy_n_sync/core/services/server_service.dart';
+import 'package:copy_n_sync/core/services/network_service.dart';
+import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/ui/views/authentication/login/login.dart';
 import 'package:copy_n_sync/ui/views/authentication/sign_up/signup.dart';
+import 'package:copy_n_sync/ui/views/home/home.dart';
 import 'package:copy_n_sync/ui/views/onboarding/onboarding.dart';
+import 'package:copy_n_sync/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 @StackedApp(
   routes: [
-    AdaptiveRoute(page: OnboardingView, initial: true),
+    AdaptiveRoute(page: StartupView, initial: true),
+    AdaptiveRoute(page: OnboardingView),
     CupertinoRoute(page: LoginView),
     CupertinoRoute(page: SignUpView),
+    CupertinoRoute(page: HomeView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),
     LazySingleton(classType: DialogService),
     LazySingleton(classType: ApiService),
     LazySingleton(classType: ServerService),
+    LazySingleton(classType: NetworkService),
+    LazySingleton(classType: SnackbarService),
+
+    
+    Presolve(
+      classType: SharedPreferencesService,
+      presolveUsing: SharedPreferencesService.getInstance,
+    )
   ],
   logger: StackedLogger(),
 )

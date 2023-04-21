@@ -9,7 +9,6 @@ import 'package:copy_n_sync/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:rive/rive.dart';
 
 @FormView(fields: [
   FormTextField(name: 'email'),
@@ -147,3 +146,5 @@ class SignUpView extends StatelessWidget with $SignUpView {
     );
   }
 }
+
+

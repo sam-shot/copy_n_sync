@@ -20,6 +20,9 @@ class LoginView extends StatelessWidget with $LoginView {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
+      onViewModelReady: (viewModel) {
+        syncFormWithViewModel(viewModel);
+      },
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -74,7 +77,9 @@ class LoginView extends StatelessWidget with $LoginView {
                   ),
                   S.height(10),
                   CustomButton(
-                    ontap: () {},
+                    ontap: () {
+                      model.login();
+                    },
                     text: "Login",
                   ),
                   S.height(30),

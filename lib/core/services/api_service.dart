@@ -29,7 +29,7 @@ class ApiService {
         queryParameters: queryParameters,
         options: Options(headers: {"Authorization": token}));
     log.v("the data fro $route is ${response.data}");
-    return response;
+    return response.data;
   }
 
   Future<dynamic> post({
@@ -42,6 +42,6 @@ class ApiService {
     var response = await dio.post(route,
         data: body, options: Options(headers: {"Authorization": token}));
     log.v("The data from $route is ${response.data}");
-    return response;
+    return response.data;
   }
 }

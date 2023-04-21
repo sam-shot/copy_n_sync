@@ -3,7 +3,6 @@
 import 'package:copy_n_sync/ui/shared/assets.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class LoadingDialog extends StatelessWidget {
@@ -29,7 +28,7 @@ class LoadingDialog extends StatelessWidget {
                   child: SizedBox(
                       width: 50,
                       height: 50,
-                      child: RiveAnimation.asset(AppAsset.loadingAnim)),
-                ))));
+                      child: CircularProgressIndicator(color: kPrimaryColor,)
+                )))));
   }
 }

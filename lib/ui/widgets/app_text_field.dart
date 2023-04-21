@@ -6,17 +6,20 @@ class AppTextField extends StatelessWidget {
   String hintText;
   TextEditingController controller;
   bool isPassword;
+  int lines;
 
   AppTextField({
     required this.controller,
     this.hintText = '',
     this.isPassword = false,
+    this.lines = 1,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: lines,
       obscureText: isPassword,
       controller: controller,
       style: h4B.copyWith(fontSize: 15),
