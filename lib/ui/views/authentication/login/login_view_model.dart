@@ -16,25 +16,30 @@ class LoginViewModel extends FormViewModel {
   final _navigation = locator<NavigationService>();
   final _server = locator<ServerService>();
   final _prefs = locator<SharedPreferencesService>();
+  final snackbar = locator<SnackbarService>();
 
   navigateToSignup() {
     _navigation.replaceWith(Routes.signUpView);
   }
 
   login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     SetLoading(true);
     final response =
         await _server.login(email: emailValue!, password: passwordValue!);
-    if (response == false) {
+    if (response.runtimeType == String) {
+      SetLoading(false);
+      snackbar.showSnackbar(message: response);
     } else {
       LoginModel data = LoginModel.fromJson(response);
       if (data.status == "200") {
-        await prefs.setString("userId", data.data!.id!);
+        _prefs.saveData("userId", data.data!.id!);
+        _prefs.saveData("syncOption", true);
         SetLoading(false);
-        return _navigation.replaceWith(Routes.homeView, arguments: HomeViewArguments(id: data.data!.id!));
+        snackbar.showSnackbar(message: data.message!);
+        _navigation.replaceWith(Routes.bottomNavigationView);
+      } else {
+        SetLoading(false);
       }
     }
-    SetLoading(false);
   }
 }

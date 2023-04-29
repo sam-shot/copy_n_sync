@@ -5,7 +5,9 @@ import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/ui/views/authentication/login/login.dart';
 import 'package:copy_n_sync/ui/views/authentication/sign_up/signup.dart';
 import 'package:copy_n_sync/ui/views/home/home.dart';
+import 'package:copy_n_sync/ui/views/navigation_bar/bottom_navigation_view.dart';
 import 'package:copy_n_sync/ui/views/onboarding/onboarding.dart';
+import 'package:copy_n_sync/ui/views/settings/settings_view.dart';
 import 'package:copy_n_sync/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -17,6 +19,8 @@ import 'package:stacked_services/stacked_services.dart';
     CupertinoRoute(page: LoginView),
     CupertinoRoute(page: SignUpView),
     CupertinoRoute(page: HomeView),
+    CupertinoRoute(page: BottomNavigationView),
+    CupertinoRoute(page: SettingsView),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

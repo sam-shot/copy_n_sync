@@ -33,15 +33,17 @@ void main() async {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(350, 600),
-      maximumSize: Size(350, 600),
-      minimumSize: Size(350, 600),
+      size: Size(350, 700),
+      maximumSize: Size(350, 700),
+      minimumSize: Size(350, 700),
       center: false,
       skipTaskbar: false,
       backgroundColor: Colors.transparent,
       titleBarStyle: TitleBarStyle.normal,
     );
     windowManager.setMaximizable(false);
+    windowManager.setTitle("Copy N Sync");
+    windowManager.setHasShadow(false);
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
       await windowManager.focus();

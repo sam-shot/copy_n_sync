@@ -51,7 +51,7 @@ class LoginView extends StatelessWidget with $LoginView {
                   ),
                   S.height(5),
                   AppTextField(
-                    controller: passwordController,
+                    controller: emailController,
                     hintText: "e.g email@domain.com",
                   ),
                   S.height(12),
@@ -61,7 +61,7 @@ class LoginView extends StatelessWidget with $LoginView {
                   ),
                   S.height(5),
                   AppTextField(
-                    controller: emailController,
+                    controller: passwordController,
                     isPassword: true,
                   ),
                   S.height(20),

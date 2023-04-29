@@ -97,7 +97,7 @@ class HomeViewModel extends FormViewModel {
 
   void onDisconnected() {
     connected = false;
-    snackbar.showSnackbar(message: "You are Disconnected");
+    // snackbar.showSnackbar(message: "You are Disconnected");
   }
 
   void onConnected() async {
@@ -113,13 +113,19 @@ class HomeViewModel extends FormViewModel {
     }
   }
 
-  void logout() {
-    socketService!.disconnect();
-    socketService!.dispose();
-    _pref.deleteData("userId");
-    _navigation.replaceWith(Routes.loginView);
-    AwesomeNotifications().cancelAll();
+  copyHistory(String data){
+    FlutterClipboard.copy(data);
   }
+
+  sendHistory(String data){
+    if (connected == true) {
+      socketService!.send(id, message: data);
+    } else {
+      snackbar.showSnackbar(message: "You are not connected");
+    }
+  }
+
+ 
 
   static const clipboardChannel = MethodChannel('clipboard');
 
@@ -133,5 +139,9 @@ class HomeViewModel extends FormViewModel {
         _instance!.socketService!.send(_instance!.id, message: data);
       } on PlatformException catch (e) {}
     }
+  }
+
+  void end() {
+    socketService!.dispose();
   }
 }

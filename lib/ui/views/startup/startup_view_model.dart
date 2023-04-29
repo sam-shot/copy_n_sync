@@ -8,22 +8,22 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 class StartupViewModel extends BaseViewModel {
   final _navigation = locator<NavigationService>();
 
-  Future init() async{
+  Future init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if(!isAllowed){
+      if (!isAllowed) {
         AwesomeNotifications().requestPermissionToSendNotifications();
       }
-    });  
+    });
     bool deviceSaved = prefs.containsKey('onboarded');
     if (deviceSaved) {
       bool userLogged = prefs.containsKey('userId');
-     if(userLogged){
-       String? id = prefs.getString("userId");
-       _navigation.replaceWith(Routes.homeView, arguments: HomeViewArguments(id: id!));
-     } else {
-      _navigation.replaceWith(Routes.loginView);
-     }
+      if (userLogged) {
+        String? id = prefs.getString("userId");
+        _navigation.replaceWith(Routes.bottomNavigationView);
+      } else {
+        _navigation.replaceWith(Routes.loginView);
+      }
     } else {
       _navigation.replaceWith(Routes.onboardingView);
     }

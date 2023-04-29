@@ -10,7 +10,6 @@ class NetworkService{
   final navigation = locator<NavigationService>();
   final _dialog = locator<DialogService>();
   final _log = getLogger("NetworkService");
-  final snackbar = locator<SnackbarService>();
 
   Future<Either<dynamic, dynamic>> fmt(Function function) async {
     try {
@@ -19,7 +18,6 @@ class NetworkService{
       
       final errorMessage = DioExceptions.fromDioError(e).toString();
       _log.v(errorMessage);
-      snackbar.showSnackbar(message: errorMessage);
       return Left(errorMessage);
     }
   }

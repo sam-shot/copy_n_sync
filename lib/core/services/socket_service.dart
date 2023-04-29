@@ -68,6 +68,7 @@ class SocketService {
 
 
    void dispose() {
+    socket!.dispose();
      socket = null;
    }
 }

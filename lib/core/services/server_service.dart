@@ -53,7 +53,7 @@ class ServerService {
       return _apiService
           .post(route: route, body: {"email": email, "password": password});
     });
-    return response.fold((l) => false, (r) {
+    return response.fold((l) => l, (r) {
       log.v("Server created : $response");
       return r;
     });
