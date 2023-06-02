@@ -1,7 +1,9 @@
 package com.example.copy_n_sync
 
+import android.app.ActivityManager
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.BinaryMessenger
@@ -46,6 +48,36 @@ class MainActivity: FlutterActivity() {
 
     private fun teardownChannels(){
         methodChannel!!.setMethodCallHandler(null)
+    }
+
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isAppRunning = isAppRunning(this)
+    }
+
+    companion object {
+        var isAppRunning = false
+            private set
+
+        fun isAppRunning(context: Context): Boolean {
+            val packageName = context.packageName
+            val activityManager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+            val processInfo = activityManager.runningAppProcesses
+            if (processInfo != null) {
+                for (info in processInfo) {
+                    if (info.processName == packageName) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        fun getIsAppRunning(): Boolean {
+            return isAppRunning
+        }
+
+
     }
 
     
