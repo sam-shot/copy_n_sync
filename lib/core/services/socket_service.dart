@@ -21,13 +21,11 @@ class SocketService {
       });
       socket!.connect();
       socket!.onConnect((data) {
-        print("${socket!.id} Connected to Socket");
         if(onConnected != null){
           onConnected!();
         }
       });
       socket!.onDisconnect((data) {
-        print("Disconnected from Socket");
         if(onDisconnected != null){
           onDisconnected!();
         }
@@ -58,12 +56,10 @@ class SocketService {
     socket!.on(event, callback);
 
 
-    print('Registered handler for $event');
   }
 
    void unregisterEvent(String event) {
     socket!.off(event);
-    print('Unregistered handler for $event');
   }
 
 

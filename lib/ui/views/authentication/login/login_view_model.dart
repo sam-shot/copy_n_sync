@@ -32,7 +32,7 @@ class LoginViewModel extends FormViewModel {
     } else {
       LoginModel data = LoginModel.fromJson(response);
       if (data.status == "200") {
-        _prefs.saveData("userId", data.data!.id!);
+        await _prefs.saveData("userId", data.data!.id!);
         _prefs.saveData("syncOption", true);
         SetLoading(false);
         snackbar.showSnackbar(message: data.message!);

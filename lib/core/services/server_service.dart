@@ -58,4 +58,19 @@ class ServerService {
       return r;
     });
   }
+
+  Future sendToDatabase({
+    required String text,
+    required String id,
+  }) async {
+    const route = "/send/text";
+    final response = await _networkService.fmt(() {
+      return _apiService
+          .post(route: route, body: {"text": text, "id": id});
+    });
+    return response.fold((l) => l, (r) {
+      log.v("Server created : $response");
+      return r;
+    });
+  }
 }

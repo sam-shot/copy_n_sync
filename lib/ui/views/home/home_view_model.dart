@@ -1,22 +1,16 @@
-import 'dart:io';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:copy_n_sync/app/app.locator.dart';
-import 'package:copy_n_sync/app/app.router.dart';
-import 'package:copy_n_sync/core/constants.dart';
 import 'package:copy_n_sync/core/models/all_texts/all_texts.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/views/home/home.form.dart';
 import 'package:flutter/services.dart';
-import 'package:rich_clipboard/rich_clipboard.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import '../../../core/services/server_service.dart';
 
-import 'package:flutter/material.dart';
+import '../../../core/services/server_service.dart';
 
 class HomeViewModel extends FormViewModel {
   final _navigation = locator<NavigationService>();
@@ -36,14 +30,15 @@ class HomeViewModel extends FormViewModel {
   List<String> allTexts = [];
   bool connected = true;
 
-  
-
   getAllTexts() async {
     final response = await _server.getTexts(id: id);
     AllTexts data = AllTexts.fromJson(response);
-    allTexts = data.data!;
-    print(allTexts);
+    allTexts = data.data!.reversed.toList();
     notifyListeners();
+  }
+
+  void addToDatabase(String text) async {
+    final response = await _server.sendToDatabase(text: text, id: id);
   }
 
   openNotification() {
@@ -69,7 +64,7 @@ class HomeViewModel extends FormViewModel {
     socketService!.connect();
     socketService!.eventListener("get", (data) {
       FlutterClipboard.copy(data.toString());
-
+      getAllTexts();
       AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 11,
@@ -105,27 +100,27 @@ class HomeViewModel extends FormViewModel {
     openNotification();
   }
 
-  void send() {
+  void send() async {
     if (connected == true) {
       socketService!.send(id, message: messageValue!);
+      addToDatabase(messageValue!);
+      getAllTexts();
     } else {
       snackbar.showSnackbar(message: "You are not connected");
     }
   }
 
-  copyHistory(String data){
+  copyHistory(String data) {
     FlutterClipboard.copy(data);
   }
 
-  sendHistory(String data){
+  sendHistory(String data) {
     if (connected == true) {
       socketService!.send(id, message: data);
     } else {
       snackbar.showSnackbar(message: "You are not connected");
     }
   }
-
- 
 
   static const clipboardChannel = MethodChannel('clipboard');
 
@@ -137,7 +132,9 @@ class HomeViewModel extends FormViewModel {
       try {
         data = await clipboardChannel.invokeMethod('getClipData');
         _instance!.socketService!.send(_instance!.id, message: data);
-      } on PlatformException catch (e) {}
+        _instance!.addToDatabase(data);
+        _instance!.getAllTexts();
+      } on PlatformException {}
     }
   }
 

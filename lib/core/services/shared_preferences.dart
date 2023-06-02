@@ -34,7 +34,7 @@ class SharedPreferencesService{
   }
 
   // Private method for saving data to shared preferences
-  void saveData(String key, dynamic value) {
+   saveData(String key, dynamic value) {
     // Easily log the data that we save to shared preferences
     log.v('Saving $key: $value');
 

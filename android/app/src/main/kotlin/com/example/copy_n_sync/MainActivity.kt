@@ -36,7 +36,7 @@ class MainActivity: FlutterActivity() {
                     val latestText = clipData.getItemAt(0).text.toString()
                     result.success(latestText)
                 } else {
-                    result.success("Errosar")
+                    result.success("")
                 }
             } else {
                 result.notImplemented()
