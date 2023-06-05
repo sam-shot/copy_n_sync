@@ -1,4 +1,3 @@
-import 'package:copy_n_sync/ui/shared/assets.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
@@ -31,7 +30,7 @@ class SignUpView extends StatelessWidget with $SignUpView {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  S.height(20),
+                  const S.height(20),
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Text(
@@ -39,52 +38,70 @@ class SignUpView extends StatelessWidget with $SignUpView {
                       style: h1,
                     ),
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "Join the Copy-n-Sync community and never lose track of your copied items again. Sign up today and experience the ease and convenience of seamless clipboard syncing across all your devices",
                     style: p,
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "Email",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
                     controller: emailController,
                     hintText: "e.g email@domain.com",
+                    
+                    validationMessage: model.emailValidationMessage,
+                    focusNode: emailFocusNode,
+                    onSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(usernameFocusNode);
+                    },
                   ),
-                  S.height(12),
+                  const S.height(12),
                   Text(
                     "Username",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
                     controller: usernameController,
                     hintText: "",
+                    validationMessage: model.usernameValidationMessage,
+                    focusNode: usernameFocusNode,
+                    onSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(passwordFocusNode);
+                    },
                   ),
-                  S.height(12),
+                  const S.height(12),
                   Text(
                     "Password",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
                     controller: passwordController,
                     isPassword: true,
+                    validationMessage: model.passwordValidationMessage,
+                    focusNode: passwordFocusNode,
+                    onSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(cpasswordFocusNode);
+                    },
                   ),
-                  S.height(12),
+                  const S.height(12),
                   Text(
                     "Confirm Password",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
                     controller: cpasswordController,
                     isPassword: true,
+                    validationMessage: model.cpasswordValidationMessage,
+                    focusNode: cpasswordFocusNode,
                   ),
-                  S.height(20),
+                  const S.height(20),
                   CustomButton(
                     ontap: () {
                       model.register();
@@ -92,8 +109,7 @@ class SignUpView extends StatelessWidget with $SignUpView {
                     text: "Sign Up",
                   ),
                   Text(model.status, style: p.copyWith(color: kSecondaryColor)),
-                  
-                  S.height(30),
+                  const S.height(30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -102,12 +118,12 @@ class SignUpView extends StatelessWidget with $SignUpView {
                         width: 100,
                         color: kSecondaryColor,
                       ),
-                      S.width(10),
+                      const S.width(10),
                       Text(
                         "OR",
                         style: placeholder,
                       ),
-                      S.width(10),
+                      const S.width(10),
                       Container(
                         height: 1.5,
                         width: 100,
@@ -115,7 +131,7 @@ class SignUpView extends StatelessWidget with $SignUpView {
                       ),
                     ],
                   ),
-                  S.height(30),
+                  const S.height(30),
                   CustomButton(
                     ontap: () {},
                     text: "Sign up with Google",
@@ -123,12 +139,12 @@ class SignUpView extends StatelessWidget with $SignUpView {
                     hasImage: true,
                     isOutlined: true,
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "Already have an account?  ",
                     style: placeholder,
                   ),
-                  S.height(10),
+                  const S.height(10),
                   CustomButton(
                     ontap: () {
                       model.navigateToLogin();
@@ -146,5 +162,3 @@ class SignUpView extends StatelessWidget with $SignUpView {
     );
   }
 }
-
-

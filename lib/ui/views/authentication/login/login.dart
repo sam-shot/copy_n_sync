@@ -1,4 +1,3 @@
-import 'package:copy_n_sync/ui/shared/assets.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
@@ -31,7 +30,7 @@ class LoginView extends StatelessWidget with $LoginView {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  S.height(20),
+                  const S.height(20),
                   Padding(
                     padding: const EdgeInsets.all(5),
                     child: Text(
@@ -39,32 +38,39 @@ class LoginView extends StatelessWidget with $LoginView {
                       style: h1,
                     ),
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "With Copy-N-Sync, sharing your clipboard has never been easier. Login to enjoy fast and efficient copying and pasting across all your devices",
                     style: p,
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "Email",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
                     controller: emailController,
                     hintText: "e.g email@domain.com",
+                    validationMessage: model.emailValidationMessage,
+                    focusNode: emailFocusNode,
+                    onSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(passwordFocusNode);
+                    },
                   ),
-                  S.height(12),
+                  const S.height(12),
                   Text(
                     "Password",
                     style: placeholder,
                   ),
-                  S.height(5),
+                  const S.height(5),
                   AppTextField(
-                    controller: passwordController,
-                    isPassword: true,
-                  ),
-                  S.height(20),
+                      controller: passwordController,
+                      isPassword: true,
+                      validationMessage: model.passwordValidationMessage,
+                      focusNode: passwordFocusNode,
+                      ),
+                  const S.height(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -75,14 +81,14 @@ class LoginView extends StatelessWidget with $LoginView {
                       ),
                     ],
                   ),
-                  S.height(10),
+                  const S.height(10),
                   CustomButton(
                     ontap: () {
                       model.login();
                     },
                     text: "Login",
                   ),
-                  S.height(30),
+                  const S.height(30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -91,12 +97,12 @@ class LoginView extends StatelessWidget with $LoginView {
                         width: 100,
                         color: kSecondaryColor,
                       ),
-                      S.width(10),
+                      const S.width(10),
                       Text(
                         "OR",
                         style: placeholder,
                       ),
-                      S.width(10),
+                      const S.width(10),
                       Container(
                         height: 1.5,
                         width: 100,
@@ -104,7 +110,7 @@ class LoginView extends StatelessWidget with $LoginView {
                       ),
                     ],
                   ),
-                  S.height(30),
+                  const S.height(30),
                   CustomButton(
                     ontap: () {},
                     text: "Login with Google",
@@ -112,12 +118,12 @@ class LoginView extends StatelessWidget with $LoginView {
                     hasImage: true,
                     isOutlined: true,
                   ),
-                  S.height(20),
+                  const S.height(20),
                   Text(
                     "Don’t have an account? We got you! ",
                     style: placeholder,
                   ),
-                  S.height(10),
+                  const S.height(10),
                   CustomButton(
                     ontap: () {
                       model.navigateToSignup();

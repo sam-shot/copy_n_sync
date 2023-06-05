@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:copy_n_sync/app/app.locator.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import 'package:flutter_process_text/flutter_process_text.dart';
 import '../../../core/services/server_service.dart';
 
 class HomeViewModel extends FormViewModel {
@@ -17,12 +20,24 @@ class HomeViewModel extends FormViewModel {
   final _server = locator<ServerService>();
   final _pref = locator<SharedPreferencesService>();
   final snackbar = locator<SnackbarService>();
+  final MethodChannel _contextMenuChannel = MethodChannel('contextMenuChannel');
 
   static HomeViewModel? _instance;
 
   HomeViewModel() {
     _instance = this;
+
+    _contextMenuChannel.setMethodCallHandler((call) async {
+      if (call.method == 'handleContextText') {
+        final String selectedText = call.arguments as String;
+
+        print(selectedText);
+      }
+    });
   }
+
+  // Set up method channel message handler
+    
 
   String id = "";
   SocketService? socketService;
@@ -98,6 +113,14 @@ class HomeViewModel extends FormViewModel {
   void onConnected() async {
     connected = true;
     openNotification();
+    FlutterProcessText.initialize(
+      showConfirmationToast: true,
+      showRefreshToast: true,
+      showErrorToast: true,
+      confirmationMessage: "Text Added",
+      refreshMessage: "Got all Text",
+      errorMessage: "Some Error",
+    );
   }
 
   void send() async {

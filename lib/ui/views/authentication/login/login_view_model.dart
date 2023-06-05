@@ -4,6 +4,7 @@ import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/core/models/login/login_model.dart';
 import 'package:copy_n_sync/core/services/server_service.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
+import 'package:copy_n_sync/core/util/validation.dart';
 import 'package:copy_n_sync/ui/shared/loading_status.dart';
 import 'package:copy_n_sync/ui/views/authentication/login/login.form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +24,10 @@ class LoginViewModel extends FormViewModel {
   }
 
   login() async {
-    SetLoading(true);
+    if (hasEmailValidationMessage || hasPasswordValidationMessage || emailValue == null || passwordValue == null) {
+      snackbar.showSnackbar(message: "Fields Cannot be empty");
+    } else {
+      SetLoading(true);
     final response =
         await _server.login(email: emailValue!, password: passwordValue!);
     if (response.runtimeType == String) {
@@ -41,5 +45,12 @@ class LoginViewModel extends FormViewModel {
         SetLoading(false);
       }
     }
+    }
+  }
+
+  @override
+  void setFormStatus() {
+    setEmailValidationMessage(emailValidator(emailValue ?? ""));
+    setPasswordValidationMessage(passwordValidator(value: passwordValue ?? ""));
   }
 }

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_background/flutter_background.dart';
-
 import 'package:window_manager/window_manager.dart';
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
@@ -59,7 +58,6 @@ void main() async {
         defaultColor: kPrimaryColor,
         channelDescription: "Copy n Sync")
   ]);
-
   runApp(const MainApp());
 }
 

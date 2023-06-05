@@ -24,7 +24,7 @@ class ServerService {
         "password": password
       });
     });
-     return response.fold((l) => false, (r) {
+     return response.fold((l) => l, (r) {
       // final dataResponse = UserResponse.fromJson(r);
       log.v("Server created : $response");
       return r;
