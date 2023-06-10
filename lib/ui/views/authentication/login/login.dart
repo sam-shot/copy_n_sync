@@ -70,7 +70,7 @@ class LoginView extends StatelessWidget with $LoginView {
                       validationMessage: model.passwordValidationMessage,
                       focusNode: passwordFocusNode,
                       ),
-                  const S.height(20),
+                  const S.height(5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

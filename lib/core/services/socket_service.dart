@@ -25,6 +25,8 @@ class SocketService {
     _socket!.connect();
     _socket!.onConnect((data) {
       onConnected?.call();
+      onError();
+      onGet();
     });
     _socket!.onDisconnect((data) {
       onDisconnected?.call();
@@ -46,6 +48,17 @@ class SocketService {
   void send(String id, {required String message,required bool fromHistory}) {
 
     emit("send", {'userId': id, 'message': message, 'fromHistory' : fromHistory});
+  }
+
+  void onError(){
+    eventListener("error", (data) {
+      onErrorMessage?.call(data);
+    });
+  }
+  void onGet(){
+    eventListener("get", (data) {
+      onGetMessage?.call(data);
+    });
   }
 
   void emit(String event, dynamic data) {
@@ -70,4 +83,6 @@ class SocketService {
 
   Function()? onConnected;
   Function()? onDisconnected;
+  Function(String message)? onErrorMessage;
+  Function(String message)? onGetMessage;
 }

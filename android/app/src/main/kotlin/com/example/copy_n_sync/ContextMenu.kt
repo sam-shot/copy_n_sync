@@ -45,6 +45,7 @@ class ContextMenu : FlutterActivity() {
 
 
         finish()
+        }
 
     }
 

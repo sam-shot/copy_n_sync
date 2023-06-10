@@ -6,10 +6,8 @@ import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/core/models/all_texts/all_texts.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/core/services/socket_service.dart';
-import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/views/home/home.form.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_process_text/flutter_process_text.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -29,8 +27,7 @@ class HomeViewModel extends FormViewModel {
     _instance = this;
 
     _contextMenuChannel.setMethodCallHandler((call) async {
-      if (call.method == 'handleContextText') {
-      }
+      if (call.method == 'handleContextText') {}
     });
   }
 
@@ -61,7 +58,6 @@ class HomeViewModel extends FormViewModel {
     notifyListeners();
   }
 
-
   openNotification() {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -71,8 +67,6 @@ class HomeViewModel extends FormViewModel {
         body: "Tap here to send Copied Text",
         autoDismissible: false,
         notificationLayout: NotificationLayout.Default,
-        backgroundColor: kPrimaryColor,
-        color: kPrimaryColor,
         payload: {"send": "true"},
         locked: true,
       ),
@@ -82,27 +76,8 @@ class HomeViewModel extends FormViewModel {
   Future init() async {
     id = _pref.getData("userId");
     getUserDetail();
-    SocketService.instance.eventListener("get", (data) {
-      FlutterClipboard.copy(data.toString());
-      allTexts.insert(0,
-          {"text": data.toString(), "time": DateTime.now().toUtc().toString()});
-      notifyListeners();
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: 11,
-            channelKey: "Copy n Sync",
-            title: "You just Recieved a text",
-            body: "Paste directly anywhere",
-            autoDismissible: true,
-            backgroundColor: kPrimaryColor,
-            fullScreenIntent: true,
-            color: kPrimaryColor,
-            actionType: ActionType.DismissAction),
-      );
-    });
-    SocketService.instance.eventListener("error", (data) {
-      snackbar.showSnackbar(message: data);
-    });
+    SocketService.instance.onErrorMessage = onErrorMessage;
+    SocketService.instance.onGetMessage = onGetMessage;
     SocketService.instance.onDisconnected = onDisconnected;
     SocketService.instance.onConnected = onConnected;
     setBusy(true);
@@ -114,20 +89,42 @@ class HomeViewModel extends FormViewModel {
 
   void onDisconnected() {
     connected = false;
-    // snackbar.showSnackbar(message: "You are Disconnected");
+    SocketService.instance.onErrorMessage = null;
+    SocketService.instance.onGetMessage = null;
+  }
+
+  void onErrorMessage(String message) {
+    snackbar.showSnackbar(message: message);
+  }
+
+  void onGetMessage(String data) {
+    FlutterClipboard.copy(data.toString());
+    allTexts.insert(0,
+        {"text": data.toString(), "time": formatDate(DateTime.now())});
+    notifyListeners();
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+          id: 11,
+          channelKey: "Copy n Sync",
+          title: "You just Recieved a text",
+          body: "Paste directly anywhere",
+          autoDismissible: true,
+          fullScreenIntent: true,
+          actionType: ActionType.DismissAction),
+    );
   }
 
   void onConnected() async {
     connected = true;
     openNotification();
-    FlutterProcessText.initialize(
-      showConfirmationToast: true,
-      showRefreshToast: true,
-      showErrorToast: true,
-      confirmationMessage: "Text Added",
-      refreshMessage: "Got all Text",
-      errorMessage: "Some Error",
-    );
+    // FlutterProcessText.initialize(
+    //   showConfirmationToast: true,
+    //   showRefreshToast: true,
+    //   showErrorToast: true,
+    //   confirmationMessage: "Text Added",
+    //   refreshMessage: "Got all Text",
+    //   errorMessage: "Some Error",
+    // );
   }
 
   void send() async {
@@ -159,7 +156,7 @@ class HomeViewModel extends FormViewModel {
   }
 
   String formatDate(DateTime dateTime) {
-    final DateFormat formatter = DateFormat('MM/dd EEE, hh:mm a');
+    final DateFormat formatter = DateFormat('MM/yy EEE, hh:mm a');
     return formatter.format(dateTime);
   }
 
@@ -174,6 +171,9 @@ class HomeViewModel extends FormViewModel {
         data = await clipboardChannel.invokeMethod('getClipData');
         SocketService.instance
             .send(_instance!.id, message: data, fromHistory: false);
+            _instance!.allTexts.insert(
+            0, {"text": data, "time": _instance!.formatDate(DateTime.now())});
+        _instance!.notifyListeners();
       } on PlatformException {}
     }
   }

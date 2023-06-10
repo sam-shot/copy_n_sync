@@ -4,6 +4,7 @@ import 'package:copy_n_sync/app/app.router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class StartupViewModel extends BaseViewModel {
   final _navigation = locator<NavigationService>();
@@ -16,15 +17,18 @@ class StartupViewModel extends BaseViewModel {
       }
     });
     bool deviceSaved = prefs.containsKey('onboarded');
-    if (!deviceSaved) {
+    if (deviceSaved) {
       bool userLogged = prefs.containsKey('userId');
       if (userLogged) {
         _navigation.replaceWith(Routes.bottomNavigationView);
+    FlutterNativeSplash.remove();
       } else {
         _navigation.replaceWith(Routes.loginView);
+    FlutterNativeSplash.remove();
       }
     } else {
       _navigation.replaceWith(Routes.onboardingView);
+    FlutterNativeSplash.remove();
     }
   }
 }

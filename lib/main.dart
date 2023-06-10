@@ -6,6 +6,7 @@ import 'package:copy_n_sync/ui/shared/dialog/setup_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:window_manager/window_manager.dart';
@@ -13,7 +14,8 @@ import 'app/app.locator.dart';
 import 'app/app.router.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await setupLocator();
   setupDialogUi();
   final pref = locator<SharedPreferencesService>();
@@ -57,10 +59,8 @@ void main() async {
     NotificationChannel(
         channelKey: "Copy n Sync",
         channelName: "Copy n Sync",
-        ledColor: kPrimaryColor,
         importance: NotificationImportance.Max,
         criticalAlerts: true,
-        defaultColor: kPrimaryColor,
         channelDescription: "Copy n Sync")
   ]);
   if (pref.getData("userId") != null) {

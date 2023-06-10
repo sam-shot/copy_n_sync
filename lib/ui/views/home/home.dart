@@ -107,6 +107,7 @@ class HomeView extends StatelessWidget with $HomeView {
                                     ),
                                     Expanded(
                                       child: ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 3, vertical: 15),
                                         itemCount: model.allTexts.length,

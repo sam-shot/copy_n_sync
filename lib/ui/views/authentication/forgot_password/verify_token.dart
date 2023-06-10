@@ -73,10 +73,13 @@ class VerifyToken extends StatelessWidget with $VerifyToken {
                             onTap: () {
                               model.resend();
                             },
-                            child: Text(
-                              "Resend",
-                              style: placeholder.copyWith(
-                                  fontSize: 16, color: kSecondaryColor),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Resend",
+                                style: placeholder.copyWith(
+                                    fontSize: 16, color: kSecondaryColor),
+                              ),
                             ),
                           ),
                     const S.width(10),
