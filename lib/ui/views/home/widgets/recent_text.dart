@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
@@ -6,13 +8,15 @@ import 'package:flutter/material.dart';
 class RecentText extends StatelessWidget {
   Function() onSend;
   Function() onCopy;
+  String text;
+  String time;
 
-  RecentText({
+  RecentText({super.key, 
     required this.onCopy,
     required this.onSend,
     required this.text,
+    required this.time,
   });
-  String text;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,7 +44,7 @@ class RecentText extends StatelessWidget {
                     style: placeholder.copyWith(fontSize: 11.5),
                   ),
                   Text(
-                    "2:45 am",
+                    time,
                     style: placeholder.copyWith(fontSize: 11.5),
                   ),
                 ],

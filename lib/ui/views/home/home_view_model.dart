@@ -1,4 +1,4 @@
-import 'dart:io';
+// ignore_for_file: depend_on_referenced_packages, empty_catches
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/clipboard.dart';
@@ -9,18 +9,19 @@ import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/views/home/home.form.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_process_text/flutter_process_text.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import 'package:flutter_process_text/flutter_process_text.dart';
 import '../../../core/services/server_service.dart';
 
 class HomeViewModel extends FormViewModel {
-  final _navigation = locator<NavigationService>();
   final _server = locator<ServerService>();
   final _pref = locator<SharedPreferencesService>();
   final snackbar = locator<SnackbarService>();
-  final MethodChannel _contextMenuChannel = MethodChannel('contextMenuChannel');
+  final MethodChannel _contextMenuChannel =
+      const MethodChannel('contextMenuChannel');
 
   static HomeViewModel? _instance;
 
@@ -29,32 +30,37 @@ class HomeViewModel extends FormViewModel {
 
     _contextMenuChannel.setMethodCallHandler((call) async {
       if (call.method == 'handleContextText') {
-        final String selectedText = call.arguments as String;
-
-        print(selectedText);
       }
     });
   }
 
   // Set up method channel message handler
-    
 
   String id = "";
-  SocketService? socketService;
-  String latestClip = "";
-  List<String> allTexts = [];
+  String username = "";
+  List<Map<String, String>> allTexts = [];
+  // List<String> allTexts = [];
   bool connected = true;
 
   getAllTexts() async {
     final response = await _server.getTexts(id: id);
-    AllTexts data = AllTexts.fromJson(response);
-    allTexts = data.data!.reversed.toList();
+    if (response.runtimeType == String) {
+      snackbar.showSnackbar(message: "An error occured");
+    } else {
+      AllTexts data = AllTexts.fromJson(response);
+      List<Map<String, String>> allTextsRaw = data.data!.map((e) {
+        return {"text": e.text!, "time": e.time!};
+      }).toList();
+      allTexts = allTextsRaw.reversed.toList();
+      notifyListeners();
+    }
+  }
+
+  getUserDetail() async {
+    username = _pref.getData("userName");
     notifyListeners();
   }
 
-  void addToDatabase(String text) async {
-    final response = await _server.sendToDatabase(text: text, id: id);
-  }
 
   openNotification() {
     AwesomeNotifications().createNotification(
@@ -75,11 +81,12 @@ class HomeViewModel extends FormViewModel {
 
   Future init() async {
     id = _pref.getData("userId");
-    socketService = SocketService(id);
-    socketService!.connect();
-    socketService!.eventListener("get", (data) {
+    getUserDetail();
+    SocketService.instance.eventListener("get", (data) {
       FlutterClipboard.copy(data.toString());
-      getAllTexts();
+      allTexts.insert(0,
+          {"text": data.toString(), "time": DateTime.now().toUtc().toString()});
+      notifyListeners();
       AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 11,
@@ -93,11 +100,11 @@ class HomeViewModel extends FormViewModel {
             actionType: ActionType.DismissAction),
       );
     });
-    socketService!.eventListener("error", (data) {
+    SocketService.instance.eventListener("error", (data) {
       snackbar.showSnackbar(message: data);
     });
-    socketService!.onDisconnected = onDisconnected;
-    socketService!.onConnected = onConnected;
+    SocketService.instance.onDisconnected = onDisconnected;
+    SocketService.instance.onConnected = onConnected;
     setBusy(true);
     getAllTexts();
     await AwesomeNotifications()
@@ -125,9 +132,15 @@ class HomeViewModel extends FormViewModel {
 
   void send() async {
     if (connected == true) {
-      socketService!.send(id, message: messageValue!);
-      addToDatabase(messageValue!);
-      getAllTexts();
+      if (messageValue != null) {
+        SocketService.instance
+            .send(id, message: messageValue!, fromHistory: false);
+        allTexts.insert(
+            0, {"text": messageValue!, "time": formatDate(DateTime.now())});
+        notifyListeners();
+      } else {
+        snackbar.showSnackbar(message: "Field must not be empty");
+      }
     } else {
       snackbar.showSnackbar(message: "You are not connected");
     }
@@ -139,10 +152,15 @@ class HomeViewModel extends FormViewModel {
 
   sendHistory(String data) {
     if (connected == true) {
-      socketService!.send(id, message: data);
+      SocketService.instance.send(id, message: data, fromHistory: true);
     } else {
       snackbar.showSnackbar(message: "You are not connected");
     }
+  }
+
+  String formatDate(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('MM/dd EEE, hh:mm a');
+    return formatter.format(dateTime);
   }
 
   static const clipboardChannel = MethodChannel('clipboard');
@@ -154,14 +172,9 @@ class HomeViewModel extends FormViewModel {
       String data;
       try {
         data = await clipboardChannel.invokeMethod('getClipData');
-        _instance!.socketService!.send(_instance!.id, message: data);
-        _instance!.addToDatabase(data);
-        _instance!.getAllTexts();
+        SocketService.instance
+            .send(_instance!.id, message: data, fromHistory: false);
       } on PlatformException {}
     }
-  }
-
-  void end() {
-    socketService!.dispose();
   }
 }

@@ -1,14 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/app/app.router.dart';
-import 'package:copy_n_sync/core/services/server_service.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SettingsViewModel extends BaseViewModel {
   final _navigation = locator<NavigationService>();
-  final _server = locator<ServerService>();
   final _pref = locator<SharedPreferencesService>();
 
   bool isAutomatic = true;

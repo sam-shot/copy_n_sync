@@ -26,12 +26,14 @@ class SignUpViewModel extends FormViewModel {
         emailValue == null ||
         passwordValue == null ||
         cpasswordValue == null ||
+        passwordValue == null ||
+        nameValue == null ||
         usernameValue == null) {
       snackbar.showSnackbar(message: "Fields Cannot be empty");
     } else {
       SetLoading(true);
       final response = await _server.register(
-          name: "",
+          name: nameValue!,
           username: usernameValue!,
           email: emailValue!,
           password: passwordValue!);
@@ -41,7 +43,8 @@ class SignUpViewModel extends FormViewModel {
       } else {
         Register data = Register.fromJson(response);
         if (data.status == "200") {
-          _dialog.showCustomDialog(variant: DialogType.success);
+          SetLoading(false);
+          await _dialog.showCustomDialog(variant: DialogType.success);
           navigateToLogin();
         } else {
           snackbar.showSnackbar(message: data.message!);
@@ -57,7 +60,7 @@ class SignUpViewModel extends FormViewModel {
   }
 
   @override
-  void setFormStatus() {
+  void setFormStatus() { 
     setEmailValidationMessage(emailValidator(emailValue ?? ""));
     setUsernameValidationMessage(usernameValidator(usernameValue ?? ""));
     setPasswordValidationMessage(passwordValidator(value: passwordValue ?? ""));

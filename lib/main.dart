@@ -1,4 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:copy_n_sync/core/services/shared_preferences.dart';
+import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/dialog/setup_dialog.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
   setupDialogUi();
+  final pref = locator<SharedPreferencesService>();
   if (defaultTargetPlatform == TargetPlatform.android) {
     const androidConfig = FlutterBackgroundAndroidConfig(
       notificationTitle: "flutter_background example app",
@@ -48,7 +51,9 @@ void main() async {
       await windowManager.focus();
     });
   }
-  AwesomeNotifications().initialize(null, [
+  AwesomeNotifications().initialize(
+    'resource://drawable/notify'
+    , [
     NotificationChannel(
         channelKey: "Copy n Sync",
         channelName: "Copy n Sync",
@@ -58,8 +63,14 @@ void main() async {
         defaultColor: kPrimaryColor,
         channelDescription: "Copy n Sync")
   ]);
+  if (pref.getData("userId") != null) {
+    SocketService.instance.initialize(pref.getData("userId"));
+    SocketService.instance.connect();
+  }
   runApp(const MainApp());
 }
+
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

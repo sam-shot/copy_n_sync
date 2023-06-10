@@ -14,6 +14,7 @@ import 'package:stacked/stacked_annotations.dart';
   FormTextField(name: 'password'),
   FormTextField(name: 'username'),
   FormTextField(name: 'cpassword'),
+  FormTextField(name: 'name'),
 ])
 class SignUpView extends StatelessWidget with $SignUpView {
   SignUpView({Key? key}) : super(key: key);
@@ -52,9 +53,23 @@ class SignUpView extends StatelessWidget with $SignUpView {
                   AppTextField(
                     controller: emailController,
                     hintText: "e.g email@domain.com",
-                    
                     validationMessage: model.emailValidationMessage,
                     focusNode: emailFocusNode,
+                    onSubmitted: (p0) {
+                      FocusScope.of(context).requestFocus(nameFocusNode);
+                    },
+                  ),
+                  const S.height(12),
+                  Text(
+                    "Name",
+                    style: placeholder,
+                  ),
+                  const S.height(5),
+                  AppTextField(
+                    controller: nameController,
+                    hintText: "e.g Samuel Ademujimi",
+                    validationMessage: model.nameValidationMessage,
+                    focusNode: nameFocusNode,
                     onSubmitted: (p0) {
                       FocusScope.of(context).requestFocus(usernameFocusNode);
                     },

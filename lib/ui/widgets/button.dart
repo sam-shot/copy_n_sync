@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:copy_n_sync/ui/shared/assets.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
@@ -35,7 +37,7 @@ class CustomButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             border: isOutlined
                 ? Border.all(color: kSecondaryColor, width: 2)
-                : Border(),
+                : const Border(),
             boxShadow: [
               BoxShadow(
                   color: isPrimary
@@ -47,13 +49,13 @@ class CustomButton extends StatelessWidget {
         child: Center(
             child: hasImage
                 ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         AppAsset.googleIcon,
                         width: 24,
                       ),
-                      S.width(10),
+                      const S.width(10),
                       isOutlined
                           ? Text(
                               text,

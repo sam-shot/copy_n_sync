@@ -45,9 +45,9 @@ class OnboardingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void buttonClick() async{
+  void buttonClick() async {
     controller.nextPage(
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+        duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
     notifyListeners();
     if (_currentIndex > 1) {
       SharedPreferences prefs = await SharedPreferences.getInstance();

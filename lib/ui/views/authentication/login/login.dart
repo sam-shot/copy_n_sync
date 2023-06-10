@@ -74,10 +74,16 @@ class LoginView extends StatelessWidget with $LoginView {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        "Forgot Password?",
-                        style: placeholder.copyWith(
-                            color: kPrimaryColor, fontSize: 14),
+                      InkWell(
+                        onTap: () => model.forgotPassword(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Forgot Password?",
+                            style: placeholder.copyWith(
+                                color: kPrimaryColor, fontSize: 14),
+                          ),
+                        ),
                       ),
                     ],
                   ),

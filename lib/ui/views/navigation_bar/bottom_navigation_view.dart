@@ -1,6 +1,5 @@
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
-import 'package:copy_n_sync/ui/views/authentication/login/login.dart';
 import 'package:copy_n_sync/ui/views/home/home.dart';
 import 'package:copy_n_sync/ui/views/navigation_bar/bottom_navigation_view_model.dart';
 import 'package:copy_n_sync/ui/views/settings/settings_view.dart';
@@ -13,7 +12,7 @@ class BottomNavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BottomNavigationViewModel>.reactive(
-      builder: (context, model, child) => Scaffold( 
+      builder: (context, model, child) => Scaffold(
         body: getScreenFromIndex(model.currentIndex),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -26,7 +25,7 @@ class BottomNavigationView extends StatelessWidget {
           unselectedLabelStyle: placeholder,
           unselectedItemColor: kSecondaryColor,
           unselectedIconTheme:
-              IconThemeData(color: Color.fromARGB(255, 48, 167, 117)),
+              const IconThemeData(color: Color.fromARGB(255, 48, 167, 117)),
           onTap: model.setIndex,
           items: const [
             BottomNavigationBarItem(
@@ -45,7 +44,7 @@ class BottomNavigationView extends StatelessWidget {
       case 0:
         return HomeView();
       case 1:
-        return SettingsView();
+        return const SettingsView();
       default:
         return HomeView();
     }

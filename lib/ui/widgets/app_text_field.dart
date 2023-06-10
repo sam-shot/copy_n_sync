@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
