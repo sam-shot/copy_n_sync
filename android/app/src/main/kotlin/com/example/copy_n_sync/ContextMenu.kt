@@ -38,7 +38,6 @@ class ContextMenu : FlutterActivity() {
              selectedText = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
            Toast.makeText(context,"Textgg is: $selectedText",Toast.LENGTH_LONG).show()
 
-            methodChannel?.invokeMethod("handleContextText", selectedText)
 
         // TODO: i am going to create an activity that would be actual, bu tlike a dialog, then
         // attach it to a flutter activity, which will open a specific screens using the socket instsance,and voila!

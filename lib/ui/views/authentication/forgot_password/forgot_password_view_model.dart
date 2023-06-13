@@ -85,15 +85,19 @@ class ForgotPasswordViewModel extends FormViewModel {
       final response = await _server.verifyForgotPassword(
           email: _prefs.getData("emailTemp"), code: verifycodeValue!);
       if (response.runtimeType == String) {
-        ForgotPassword forgotPassword = ForgotPassword.fromJson(response);
         SetLoading(false);
-        snackbar.showSnackbar(message: forgotPassword.message!);
+        snackbar.showSnackbar(message: response.toString()  );
       } else {
         ForgotPassword forgotPassword = ForgotPassword.fromJson(response);
-        _prefs.deleteData("emailTemp");
+        if(forgotPassword.status == "200"){
+          _prefs.deleteData("emailTemp");
         _prefs.saveData("tempToken", forgotPassword.code);
         SetLoading(false);
         _navigation.replaceWith(Routes.createPassword);
+        } else {
+        SetLoading(false);
+        snackbar.showSnackbar(message: forgotPassword.message!);
+        }
       }
     }
   }
