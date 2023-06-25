@@ -1,70 +1,88 @@
+// ignore_for_file: library_prefixes
+
 import 'package:copy_n_sync/core/constants.dart';
-import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketService {
-   IO.Socket? socket;
-   String? id;
+  static final SocketService _singleton = SocketService._internal();
+  static SocketService get instance => _singleton;
 
-  SocketService(this.id);
+  IO.Socket? _socket;
 
-  Function()? onConnected;
-  Function()? onDisconnected;
+  SocketService._internal();
 
-
-    connect() {
-      socket = IO.io(baseUrl, <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': false,
-        'reconnect': false,
-        'query': {'userId': id}
-      });
-      socket!.connect();
-      socket!.onConnect((data) {
-        if(onConnected != null){
-          onConnected!();
-        }
-      });
-      socket!.onDisconnect((data) {
-        if(onDisconnected != null){
-          onDisconnected!();
-        }
-      });
+  void initialize(String id) {
+    if (_socket != null) {
+      disconnect();
     }
 
-    disconnect() {
-     socket!.close();
-     if(onDisconnected != null){
-       onDisconnected!();
-     }
-   }
+    _socket = IO.io(baseUrl, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+      'reconnect': false,
+      'query': {'userId': id}
+    });
+    _socket!.connect();
+    _socket!.onConnect((data) {
+      onConnected?.call();
+      onError();
+      onGet();
+    });
+    _socket!.onDisconnect((data) {
+      onDisconnected?.call();
+    });
+  }
 
-   void send(String id,{required String message}){
-      emit("send", {'userId': id, 'message': message});
-   }
+  bool get isConnected => _socket?.connected ?? false;
 
-   void emit(String event, dynamic data) {
-    if (socket!.connected) {
-      socket!.emit(event, data);
-      print('Emitted $event: $data');
+  void connect() {
+    if (!isConnected) {
+      _socket?.connect();
+    }
+  }
+
+  void disconnect() {
+    _socket?.close();
+  }
+
+  void send(String id, {required String message,required bool fromHistory}) {
+
+    emit("send", {'userId': id, 'message': message, 'fromHistory' : fromHistory});
+  }
+
+  void onError(){
+    eventListener("error", (data) {
+      onErrorMessage?.call(data);
+    });
+  }
+  void onGet(){
+    eventListener("get", (data) {
+      onGetMessage?.call(data);
+    });
+  }
+
+  void emit(String event, dynamic data) {
+    if (isConnected) {
+      _socket!.emit(event, data);
     } else {
-      print('Error: socket not connected');
     }
   }
 
   void eventListener(String event, Function(dynamic) callback) {
-    socket!.on(event, callback);
-
-
+    _socket?.on(event, callback);
   }
 
-   void unregisterEvent(String event) {
-    socket!.off(event);
+  void unregisterEvent(String event) {
+    _socket?.off(event);
   }
 
+  void dispose() {
+    _socket?.dispose();
+    _socket = null;
+  }
 
-   void dispose() {
-    socket!.dispose();
-     socket = null;
-   }
+  Function()? onConnected;
+  Function()? onDisconnected;
+  Function(String message)? onErrorMessage;
+  Function(String message)? onGetMessage;
 }

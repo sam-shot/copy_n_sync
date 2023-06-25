@@ -3,7 +3,6 @@
 //     final latestText = latestTextFromJson(jsonString);
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'latest_text.freezed.dart';
 part 'latest_text.g.dart';

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "818553963570",
+    "project_id": "copy-n-sync",
+    "storage_bucket": "copy-n-sync.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818553963570:android:8c92df883ae0dae549282b",
+        "android_client_info": {
+          "package_name": "com.example.copy_n_sync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818553963570-d3fghgio66gc3l5e843f34f46mfb2llv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2JkrDa2f27JjSs-CoTwSkQLneO8yUP-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818553963570-d3fghgio66gc3l5e843f34f46mfb2llv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

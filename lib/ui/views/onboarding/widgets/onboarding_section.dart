@@ -1,24 +1,31 @@
-import 'package:copy_n_sync/ui/shared/assets.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingSection extends StatelessWidget {
-  const OnboardingSection({
+  OnboardingSection({
+    required this.imagePath,
+    required this.text,
     super.key,
   });
+
+  String text;
+  String imagePath;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Image.asset(
-          AppAsset.syncAcross,
-          width: 300,
-          fit: BoxFit.fitWidth,
+          imagePath,
+          width: 500,
+          fit: BoxFit.cover,
         ),
+        const Spacer(),
         Text(
-          "This is a notable feature bla bla bla black sheep",
-          style: h4,
+          text,
+          style: h3,
           textAlign: TextAlign.center,
         ),
       ],

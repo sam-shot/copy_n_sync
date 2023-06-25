@@ -3,7 +3,6 @@
 //     final register = registerFromJson(jsonString);
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'register.freezed.dart';
 part 'register.g.dart';

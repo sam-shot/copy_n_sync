@@ -13,6 +13,7 @@ const String EmailValueKey = 'email';
 const String PasswordValueKey = 'password';
 const String UsernameValueKey = 'username';
 const String CpasswordValueKey = 'cpassword';
+const String NameValueKey = 'name';
 
 final Map<String, TextEditingController> _SignUpViewTextEditingControllers = {};
 
@@ -23,6 +24,7 @@ final Map<String, String? Function(String?)?> _SignUpViewTextValidations = {
   PasswordValueKey: null,
   UsernameValueKey: null,
   CpasswordValueKey: null,
+  NameValueKey: null,
 };
 
 mixin $SignUpView on StatelessWidget {
@@ -34,10 +36,13 @@ mixin $SignUpView on StatelessWidget {
       _getFormTextEditingController(UsernameValueKey);
   TextEditingController get cpasswordController =>
       _getFormTextEditingController(CpasswordValueKey);
+  TextEditingController get nameController =>
+      _getFormTextEditingController(NameValueKey);
   FocusNode get emailFocusNode => _getFormFocusNode(EmailValueKey);
   FocusNode get passwordFocusNode => _getFormFocusNode(PasswordValueKey);
   FocusNode get usernameFocusNode => _getFormFocusNode(UsernameValueKey);
   FocusNode get cpasswordFocusNode => _getFormFocusNode(CpasswordValueKey);
+  FocusNode get nameFocusNode => _getFormFocusNode(NameValueKey);
 
   TextEditingController _getFormTextEditingController(String key,
       {String? initialValue}) {
@@ -64,6 +69,7 @@ mixin $SignUpView on StatelessWidget {
     passwordController.addListener(() => _updateFormData(model));
     usernameController.addListener(() => _updateFormData(model));
     cpasswordController.addListener(() => _updateFormData(model));
+    nameController.addListener(() => _updateFormData(model));
   }
 
   /// Registers a listener on every generated controller that calls [model.setData()]
@@ -75,6 +81,7 @@ mixin $SignUpView on StatelessWidget {
     passwordController.addListener(() => _updateFormData(model));
     usernameController.addListener(() => _updateFormData(model));
     cpasswordController.addListener(() => _updateFormData(model));
+    nameController.addListener(() => _updateFormData(model));
   }
 
   final bool _autoTextFieldValidation = true;
@@ -92,6 +99,7 @@ mixin $SignUpView on StatelessWidget {
           PasswordValueKey: passwordController.text,
           UsernameValueKey: usernameController.text,
           CpasswordValueKey: cpasswordController.text,
+          NameValueKey: nameController.text,
         }),
     );
     if (_autoTextFieldValidation || forceValidate) {
@@ -106,6 +114,7 @@ mixin $SignUpView on StatelessWidget {
         PasswordValueKey: _getValidationMessage(PasswordValueKey),
         UsernameValueKey: _getValidationMessage(UsernameValueKey),
         CpasswordValueKey: _getValidationMessage(CpasswordValueKey),
+        NameValueKey: _getValidationMessage(NameValueKey),
       });
 
   /// Returns the validation message for the given key
@@ -140,6 +149,7 @@ extension ValueProperties on FormViewModel {
   String? get passwordValue => this.formValueMap[PasswordValueKey] as String?;
   String? get usernameValue => this.formValueMap[UsernameValueKey] as String?;
   String? get cpasswordValue => this.formValueMap[CpasswordValueKey] as String?;
+  String? get nameValue => this.formValueMap[NameValueKey] as String?;
 
   set emailValue(String? value) {
     this.setData(
@@ -193,6 +203,19 @@ extension ValueProperties on FormViewModel {
     }
   }
 
+  set nameValue(String? value) {
+    this.setData(
+      this.formValueMap
+        ..addAll({
+          NameValueKey: value,
+        }),
+    );
+
+    if (_SignUpViewTextEditingControllers.containsKey(NameValueKey)) {
+      _SignUpViewTextEditingControllers[NameValueKey]?.text = value ?? '';
+    }
+  }
+
   bool get hasEmail =>
       this.formValueMap.containsKey(EmailValueKey) &&
       (emailValue?.isNotEmpty ?? false);
@@ -205,6 +228,9 @@ extension ValueProperties on FormViewModel {
   bool get hasCpassword =>
       this.formValueMap.containsKey(CpasswordValueKey) &&
       (cpasswordValue?.isNotEmpty ?? false);
+  bool get hasName =>
+      this.formValueMap.containsKey(NameValueKey) &&
+      (nameValue?.isNotEmpty ?? false);
 
   bool get hasEmailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey]?.isNotEmpty ?? false;
@@ -214,6 +240,8 @@ extension ValueProperties on FormViewModel {
       this.fieldsValidationMessages[UsernameValueKey]?.isNotEmpty ?? false;
   bool get hasCpasswordValidationMessage =>
       this.fieldsValidationMessages[CpasswordValueKey]?.isNotEmpty ?? false;
+  bool get hasNameValidationMessage =>
+      this.fieldsValidationMessages[NameValueKey]?.isNotEmpty ?? false;
 
   String? get emailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey];
@@ -223,11 +251,14 @@ extension ValueProperties on FormViewModel {
       this.fieldsValidationMessages[UsernameValueKey];
   String? get cpasswordValidationMessage =>
       this.fieldsValidationMessages[CpasswordValueKey];
+  String? get nameValidationMessage =>
+      this.fieldsValidationMessages[NameValueKey];
   void clearForm() {
     emailValue = '';
     passwordValue = '';
     usernameValue = '';
     cpasswordValue = '';
+    nameValue = '';
   }
 }
 
@@ -240,4 +271,6 @@ extension Methods on FormViewModel {
       this.fieldsValidationMessages[UsernameValueKey] = validationMessage;
   setCpasswordValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[CpasswordValueKey] = validationMessage;
+  setNameValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[NameValueKey] = validationMessage;
 }

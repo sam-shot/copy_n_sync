@@ -1,6 +1,5 @@
 import 'package:copy_n_sync/core/constants.dart';
 import 'package:copy_n_sync/ui/shared/assets.dart';
-import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:copy_n_sync/ui/views/onboarding/onboarding_view_model.dart';
@@ -23,12 +22,12 @@ class OnboardingView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
-                S.height(50),
+                const S.height(50),
                 Text(
                   kAppName,
                   style: h1,
                 ),
-                S.height(70),
+                const S.height(70),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 2,
@@ -36,13 +35,20 @@ class OnboardingView extends StatelessWidget {
                     onPageChanged: model.setCurrentIndex,
                     controller: model.controller,
                     children: [
-                      OnboardingSection(),
-                      OnboardingSection(),
-                      OnboardingSection(),
+                      OnboardingSection(
+                          text: "Copy, Sync, and Amplify Your Productivity",
+                          imagePath: AppAsset.onboard1),
+                      OnboardingSection(
+                          text: "Unleash the Power of Effortless Text Sync",
+                          imagePath: AppAsset.onboard2),
+                      OnboardingSection(
+                          text:
+                              "Ready to 10x Your Productivity? Login or Create an Account!",
+                          imagePath: AppAsset.onboard3),
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -50,24 +56,24 @@ class OnboardingView extends StatelessWidget {
                       backgroundColor: model.one,
                       radius: 5,
                     ),
-                    S.width(5),
+                    const S.width(5),
                     CircleAvatar(
                       backgroundColor: model.two,
                       radius: 5,
                     ),
-                    S.width(5),
+                    const S.width(5),
                     CircleAvatar(
                       backgroundColor: model.three,
                       radius: 5,
                     ),
                   ],
                 ),
-                S.height(20),
+                const S.height(20),
                 CustomButton(
                   ontap: () => model.buttonClick(),
                   text: model.buttonText,
                 ),
-                S.height(25)
+                const S.height(25)
               ],
             ),
           ),
