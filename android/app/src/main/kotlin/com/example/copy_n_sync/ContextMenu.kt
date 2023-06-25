@@ -1,53 +1,89 @@
 package com.example.copy_n_sync
 
-import android.app.AlertDialog
-import android.os.Bundle
-
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
-import android.view.Window
-import android.view.WindowManager
+import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
-import com.divyanshushekhar.flutter_process_text.FlutterProcessTextPlugin
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.plugin.common.MethodChannel
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import okio.IOException
 
 class ContextMenu : FlutterActivity() {
 
-    private val CHANNEL = "contextMenuChannel"
-    private var methodChannel: MethodChannel? = null
-
-    var selectedText : String? = null
     public override fun onCreate(savedInstanceState: Bundle?) {
 
 
 
         super.onCreate(savedInstanceState)
-//        val issAppRunning: Boolean = MainActivity.getIsAppRunning()
-        methodChannel = MethodChannel(flutterEngine!!.dartExecutor.binaryMessenger, CHANNEL)
-
-
-
-//        setTheme(android.R.style.Theme_DeviceDefault_Dialog)
-//        requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
         if(intent.action == Intent.ACTION_PROCESS_TEXT){
-             selectedText = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
-           Toast.makeText(context,"Textgg is: $selectedText",Toast.LENGTH_LONG).show()
+            val selectedText = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
+            val prefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
+            val userId = prefs.getString("flutter."+"userId", "")
+            val deviceId = prefs.getString("firebaseId", "")
 
-            methodChannel?.invokeMethod("handleContextText", selectedText)
+            Log.d("Shared pref", userId + deviceId)
 
-        // TODO: i am going to create an activity that would be actual, bu tlike a dialog, then
-        // attach it to a flutter activity, which will open a specific screens using the socket instsance,and voila!
+            val jsonText = escapeString(selectedText!!)
+            val postData = """{"userId" : "$userId","firebaseId":"$deviceId", "text":"$jsonText"}"""
 
+
+            if (userId == ""){
+                Handler(mainLooper).post{
+                    Toast.makeText(applicationContext, "YOU HAVE NOT LOGGED IN YET", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                try {
+                    val okHttpClient = OkHttpClient()
+                    val requestBody = postData.toRequestBody()
+                    val request = Request.Builder()
+                        .method("POST", requestBody)
+                        .url("https://copy-n-sync-backend.vercel.app/send/text")
+                        .addHeader("Content-Type", "application/json")
+                        .build()
+                    okHttpClient.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("Error", e.toString())
+                            call.cancel()
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            Log.d("Success", response.toString())
+                            Handler(mainLooper).post{
+                                Toast.makeText(applicationContext, "Text Synced ✅", Toast.LENGTH_SHORT).show()
+                            }
+                            call.cancel()
+                        }
+                    })
+                } catch (e: Exception){
+                    Log.d("Exception", e.toString())
+                }
+            }
 
         finish()
         }
-
     }
-
-
+    private fun escapeString(input: String): String {
+        val escapedString = StringBuilder()
+        for (c in input) {
+            when (c) {
+                '\\' -> escapedString.append("\\\\")
+                '\"' -> escapedString.append("\\\"")
+                '\n' -> escapedString.append("\\n")
+                '\r' -> escapedString.append("\\r")
+                '\t' -> escapedString.append("\\t")
+                else -> escapedString.append(c)
+            }
+        }
+        return escapedString.toString()
+    }
 }
