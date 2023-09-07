@@ -217,6 +217,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
+  device_info_plus:
+    dependency: "direct main"
+    description:
+      name: device_info_plus
+      sha256: "2c35b6d1682b028e42d07b3aee4b98fa62996c10bc12cb651ec856a80d6a761b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.2"
+  device_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_plus_platform_interface
+      sha256: d3b01d5868b50ae571cd1dc6e502fc94d956b665756180f7b16ead09e836fd64
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   dio:
     dependency: "direct main"
     description:
@@ -249,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      sha256: "9d6e95ec73abbd31ec54d0e0df8a961017e165aba1395e462e5b31ea0c165daf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.1"
   fixnum:
     dependency: transitive
     description:
@@ -302,14 +326,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.19"
-  flutter_process_text:
-    dependency: "direct main"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
     description:
-      name: flutter_process_text
-      sha256: "75cdff9d255ce892c766370824e28bbb95a7f93e99b6c4109ca694a6ef4d5681"
+      name: flutter_plugin_android_lifecycle
+      sha256: f185ac890306b5779ecbd611f52502d8d4d63d27703ef73161ca0407e815f02c
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "2.0.16"
+  flutter_screenutil:
+    dependency: "direct main"
+    description:
+      name: flutter_screenutil
+      sha256: "0a122936b450324cbdfd51be0819cc6fcebb093eb65585e9cd92263f7a1a8a39"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -344,6 +376,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  gap:
+    dependency: "direct main"
+    description:
+      name: gap
+      sha256: f19387d4e32f849394758b91377f9153a1b41d79513ef7668c088c77dbc6955d
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   get:
     dependency: transitive
     description:
@@ -588,10 +628,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: f53720498d5a543f9607db4b0e997c4b5438884de25b0f73098cc2671a51b130
+      sha256: "1cb68ba4cd3a795033de62ba1b7b4564dace301f952de6bfb3cd91b202b6ee96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.7"
   petitparser:
     dependency: transitive
     description:
@@ -672,70 +712,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  rich_clipboard:
-    dependency: "direct main"
-    description:
-      name: rich_clipboard
-      sha256: "48bfc84a0d3eeec5692b3afd0277aa658a7c95d1dbda72bb623188fba6a8e253"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
-  rich_clipboard_android:
-    dependency: transitive
-    description:
-      name: rich_clipboard_android
-      sha256: "1388bad7748791818aa5b822df2f3449fff34785b266fa6ca4cbc7cd24342871"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
-  rich_clipboard_ios:
-    dependency: transitive
-    description:
-      name: rich_clipboard_ios
-      sha256: "9d6bc037463b1b24cb14ae35ee9d7530bd6b2bdb15b30909fb47a1af01bf3233"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
-  rich_clipboard_linux:
-    dependency: transitive
-    description:
-      name: rich_clipboard_linux
-      sha256: "0d0ab273afd60cb7314d01fdf3994fa01be2be79528f448241d9d70ea19b3db9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
-  rich_clipboard_macos:
-    dependency: transitive
-    description:
-      name: rich_clipboard_macos
-      sha256: "1aeb409e267576baaced347549e42dabc59895b10b2e09dabd9f753f469deb3e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
-  rich_clipboard_platform_interface:
-    dependency: transitive
-    description:
-      name: rich_clipboard_platform_interface
-      sha256: a1cbf255719cd4e340d33eca02b619d9ffb9cb571f1905e80b9345d4266e893d
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
-  rich_clipboard_web:
-    dependency: transitive
-    description:
-      name: rich_clipboard_web
-      sha256: c1dd2b75b8ce83fed0027828900bbfd5c33c0f8ff22efb266931db5aa7acffa0
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
-  rich_clipboard_windows:
-    dependency: transitive
-    description:
-      name: rich_clipboard_windows
-      sha256: fa2a28e75ce4bcc9efc6d5d0e9788b76716cdaf3b7063c141fe8af12a315f414
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   screen_retriever:
     dependency: transitive
     description:
@@ -1001,10 +977,18 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: c9ebe7ee4ab0c2194e65d3a07d8c54c5d00bb001b76081c4a04cdb8448b59e46
+      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.3"
+    version: "4.1.4"
+  win32_registry:
+    dependency: transitive
+    description:
+      name: win32_registry
+      sha256: "1c52f994bdccb77103a6231ad4ea331a244dbcef5d1f37d8462f713143b0bfae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   window_manager:
     dependency: "direct main"
     description:
@@ -1039,4 +1023,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.5 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.7.0"

@@ -3,18 +3,10 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
-import okio.IOException
 
 class MyFirebaseMessagingService : FirebaseMessagingService(){
 

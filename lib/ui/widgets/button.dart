@@ -5,6 +5,7 @@ import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
@@ -29,23 +30,16 @@ class CustomButton extends StatelessWidget {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-            color: isOutlined
-                ? kWhite
-                : isPrimary
-                    ? kPrimaryColor
-                    : kSecondaryColor,
-            borderRadius: BorderRadius.circular(10),
-            border: isOutlined
-                ? Border.all(color: kSecondaryColor, width: 2)
-                : const Border(),
-            boxShadow: [
-              BoxShadow(
-                  color: isPrimary
-                      ? kPrimaryColor.withOpacity(0.2)
-                      : kSecondaryColor.withOpacity(0.2),
-                  blurRadius: 9,
-                  offset: const Offset(0, 5))
-            ]),
+          color: isOutlined
+              ? kWhite
+              : isPrimary
+                  ? kPrimaryColor.withOpacity(0.25)
+                  : kSecondaryColor,
+          borderRadius: BorderRadius.circular(10),
+          border: isOutlined
+              ? Border.all(color: kSecondaryColor, width: 2)
+              : const Border(),
+        ),
         child: Center(
             child: hasImage
                 ? Row(
@@ -59,32 +53,37 @@ class CustomButton extends StatelessWidget {
                       isOutlined
                           ? Text(
                               text,
-                              style: h4B.copyWith(color: kSecondaryColor),
+                              style: h4B.copyWith(
+                                  color: Colors.white, fontSize: 13.sp),
                             )
                           : isPrimary
                               ? Text(
                                   text,
-                                  style: h4B.copyWith(color: kSecondaryColor),
+                                  style: h4B.copyWith(
+                                      color: Colors.white, fontSize: 13.sp),
                                 )
                               : Text(
                                   text,
-                                  style: h4B.copyWith(color: kWhite),
+                                  style: h4B.copyWith(
+                                      color: kWhite, fontSize: 13.sp),
                                 )
                     ],
                   )
                 : isOutlined
                     ? Text(
                         text,
-                        style: h4B.copyWith(color: kSecondaryColor),
+                        style:
+                            h4B.copyWith(color: Colors.white, fontSize: 13.sp),
                       )
                     : isPrimary
                         ? Text(
                             text,
-                            style: h4B.copyWith(color: kSecondaryColor),
+                            style: h4B.copyWith(
+                                color: Colors.white, fontSize: 13.sp),
                           )
                         : Text(
                             text,
-                            style: h4B.copyWith(color: kWhite),
+                            style: h4B.copyWith(color: kWhite, fontSize: 13.sp),
                           )),
       ),
     );

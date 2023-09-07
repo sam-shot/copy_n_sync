@@ -1,8 +1,6 @@
 package com.example.copy_n_sync
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler

@@ -1,15 +1,16 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
-import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/dialog/setup_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:stacked_services/stacked_services.dart';
 import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:window_manager/window_manager.dart';
+
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
 
@@ -53,9 +54,7 @@ void main() async {
       await windowManager.focus();
     });
   }
-  AwesomeNotifications().initialize(
-    'resource://drawable/notify'
-    , [
+  AwesomeNotifications().initialize('resource://drawable/notify', [
     NotificationChannel(
         channelKey: "Copy n Sync",
         channelName: "Copy n Sync",
@@ -63,14 +62,9 @@ void main() async {
         criticalAlerts: true,
         channelDescription: "Copy n Sync")
   ]);
-  if (pref.getData("userId") != null) {
-    SocketService.instance.initialize(pref.getData("userId"));
-    SocketService.instance.connect();
-  }
+
   runApp(const MainApp());
 }
-
-
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -78,12 +72,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: kSecondaryColor,
+      statusBarColor: kSecondaryColor.withOpacity(0.05),
     ));
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      navigatorKey: StackedService.navigatorKey,
+    return ScreenUtilInit(
+      designSize: const Size(360, 650),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: StackedRouter().onGenerateRoute,
+          theme: ThemeData(
+
+              scaffoldBackgroundColor: Colors.white.withOpacity(0.06)),
+          navigatorKey: StackedService.navigatorKey,
+        );
+      },
     );
   }
 }

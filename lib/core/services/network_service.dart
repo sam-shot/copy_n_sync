@@ -15,7 +15,7 @@ class NetworkService{
       return Right(await function.call());
     }on DioError catch (e) {
       final errorMessage = DioExceptions.fromDioError(e).toString();
-      _log.v(errorMessage);
+      _log.v(e);
       return Left(errorMessage);
     }
   }

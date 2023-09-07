@@ -1,12 +1,16 @@
 // ignore_for_file: depend_on_referenced_packages, empty_catches
 
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:copy_n_sync/app/app.locator.dart';
+import 'package:copy_n_sync/app/app.router.dart';
 import 'package:copy_n_sync/core/models/all_texts/all_texts.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/core/services/socket_service.dart';
-import 'package:copy_n_sync/ui/views/home/home.form.dart';
+import 'package:copy_n_sync/ui/shared/loading_status.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
@@ -17,30 +21,25 @@ import '../../../core/services/server_service.dart';
 class HomeViewModel extends FormViewModel {
   final _server = locator<ServerService>();
   final _pref = locator<SharedPreferencesService>();
+  final _nav = locator<NavigationService>();
   final snackbar = locator<SnackbarService>();
-  final MethodChannel _contextMenuChannel =
-      const MethodChannel('contextMenuChannel');
 
   static HomeViewModel? _instance;
-
   HomeViewModel() {
     _instance = this;
-
-    _contextMenuChannel.setMethodCallHandler((call) async {
-      if (call.method == 'handleContextText') {}
-    });
   }
-
-  // Set up method channel message handler
 
   String id = "";
   String username = "";
+  String fileName = "";
   List<Map<String, String>> allTexts = [];
   // List<String> allTexts = [];
   bool connected = true;
+  File? file;
+  bool isUploading = false;
 
   getAllTexts() async {
-    final response = await _server.getTexts(id: id);
+    final response = await _server.getTexts(id: _pref.getData("userId"));
     if (response.runtimeType == String) {
       snackbar.showSnackbar(message: "An error occured");
     } else {
@@ -76,87 +75,53 @@ class HomeViewModel extends FormViewModel {
   Future init() async {
     id = _pref.getData("userId");
     getUserDetail();
-    SocketService.instance.onErrorMessage = onErrorMessage;
-    SocketService.instance.onGetMessage = onGetMessage;
-    SocketService.instance.onDisconnected = onDisconnected;
-    SocketService.instance.onConnected = onConnected;
     setBusy(true);
-    getAllTexts();
+    await getAllTexts();
+    openNotification();
     await AwesomeNotifications()
         .setListeners(onActionReceivedMethod: onActionReceivedMethod);
     setBusy(false);
-  }
-
-  void onDisconnected() {
-    connected = false;
-    SocketService.instance.onErrorMessage = null;
-    SocketService.instance.onGetMessage = null;
-  }
-
-  void onErrorMessage(String message) {
-    snackbar.showSnackbar(message: message);
-  }
-
-  void onGetMessage(String data) {
-    FlutterClipboard.copy(data.toString());
-    allTexts.insert(0,
-        {"text": data.toString(), "time": formatDate(DateTime.now())});
-    notifyListeners();
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-          id: 11,
-          channelKey: "Copy n Sync",
-          title: "You just Recieved a text",
-          body: "Paste directly anywhere",
-          autoDismissible: true,
-          fullScreenIntent: true,
-          actionType: ActionType.DismissAction),
-    );
-  }
-
-  void onConnected() async {
-    connected = true;
-    openNotification();
-    // FlutterProcessText.initialize(
-    //   showConfirmationToast: true,
-    //   showRefreshToast: true,
-    //   showErrorToast: true,
-    //   confirmationMessage: "Text Added",
-    //   refreshMessage: "Got all Text",
-    //   errorMessage: "Some Error",
-    // );
-  }
-
-  void send() async {
-    if (connected == true) {
-      if (messageValue != null) {
-        SocketService.instance
-            .send(id, message: messageValue!, fromHistory: false);
-        allTexts.insert(
-            0, {"text": messageValue!, "time": formatDate(DateTime.now())});
-        notifyListeners();
-      } else {
-        snackbar.showSnackbar(message: "Field must not be empty");
-      }
-    } else {
-      snackbar.showSnackbar(message: "You are not connected");
-    }
   }
 
   copyHistory(String data) {
     FlutterClipboard.copy(data);
   }
 
-  sendHistory(String data) {
-    if (connected == true) {
-      SocketService.instance.send(id, message: data, fromHistory: true);
-    } else {
-      snackbar.showSnackbar(message: "You are not connected");
+  sendHistory(String data) async {
+    SetLoading(true);
+    final res = await _server.sendHistory(text: data, id: id);
+    SetLoading(false);
+  }
+
+  selectFile(void Function(void Function()) setState) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      file = File(result.files.single.path!);
+      fileName = result.files.single.path!;
+      setState(() {});
+    } else {}
+  }
+
+  uploadFile(void Function(void Function()) setState) async {
+    isUploading = true;
+    setState(() {});
+    if (file != null) {
+      final res = await _server.uploadFile(userId: id, filePath: file!.path);
+      print(res);
+
+      fileName = "Upload Sucessful";
+
+      setState(() {});
+      await Future.delayed(const Duration(milliseconds: 1000));
+      fileName = "No file Selected";
     }
+    isUploading = false;
+    setState(() {});
   }
 
   String formatDate(DateTime dateTime) {
-    final DateFormat formatter = DateFormat('MM/yy EEE, hh:mm a');
+    final DateFormat formatter = DateFormat('MM/yy EEE, hh:mm');
     return formatter.format(dateTime);
   }
 
@@ -171,10 +136,14 @@ class HomeViewModel extends FormViewModel {
         data = await clipboardChannel.invokeMethod('getClipData');
         SocketService.instance
             .send(_instance!.id, message: data, fromHistory: false);
-            _instance!.allTexts.insert(
+        _instance!.allTexts.insert(
             0, {"text": data, "time": _instance!.formatDate(DateTime.now())});
         _instance!.notifyListeners();
       } on PlatformException {}
     }
+  }
+
+  void goToSettings() {
+    _nav.navigateTo(Routes.settingsView);
   }
 }

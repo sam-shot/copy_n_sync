@@ -1,9 +1,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:copy_n_sync/ui/shared/colors.dart';
-import 'package:copy_n_sync/ui/shared/spacing.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class RecentText extends StatelessWidget {
   Function() onSend;
@@ -11,7 +12,8 @@ class RecentText extends StatelessWidget {
   String text;
   String time;
 
-  RecentText({super.key, 
+  RecentText({
+    super.key,
     required this.onCopy,
     required this.onSend,
     required this.text,
@@ -21,69 +23,65 @@ class RecentText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
-          border: Border.all(color: kSecondaryColor, width: 2),
-          borderRadius: BorderRadius.circular(7),
-          color: kLightColor),
+          borderRadius: BorderRadius.circular(12),
+          color: kPrimaryColor.withOpacity(0.1)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SizedBox(
-              height: 65,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: Text(
                     text,
-                    maxLines: 2,
-                    overflow: TextOverflow.fade,
-                    style: placeholder.copyWith(fontSize: 11.5),
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                    style: placeholder.copyWith(
+                        fontSize: 11.5.sp, fontWeight: FontWeight.w300),
                   ),
-                  Text(
-                    time,
-                    style: placeholder.copyWith(fontSize: 11.5),
+                ),
+                Gap(17.h),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12)),
+                    color: Colors.white70.withOpacity(0.05),
                   ),
-                ],
-              ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        time,
+                        style: placeholder.copyWith(
+                            fontSize: 10.sp, fontWeight: FontWeight.w300),
+                      ),
+                      IconButton(
+                          onPressed: onCopy,
+                          icon: const Icon(
+                            Icons.content_copy_outlined,
+                            color: Colors.white70,
+                          )),
+                      IconButton(
+                          onPressed: onSend,
+                          icon: const Icon(
+                            Icons.send_rounded,
+                            color: Colors.white70,
+                          )),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          const S.width(10),
-          Column(
-            children: [
-              InkWell(
-                onTap: onCopy,
-                child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    decoration: BoxDecoration(
-                        color: kSecondaryColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Text(
-                      "Copy",
-                      style: placeholder.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w300),
-                    )),
-              ),
-              const S.height(10),
-              InkWell(
-                onTap: onSend,
-                child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Text(
-                      "Send",
-                      style: placeholder,
-                    )),
-              ),
-            ],
-          )
         ],
       ),
     );
