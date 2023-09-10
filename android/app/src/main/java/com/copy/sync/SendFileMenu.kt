@@ -1,7 +1,5 @@
-package com.example.copy_n_sync
+package com.copy.sync
 
-import android.content.ClipboardManager
-import android.content.ContentResolver.MimeTypeInfo
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,13 +12,11 @@ import androidx.core.app.NotificationManagerCompat
 import io.flutter.embedding.android.FlutterActivity
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream

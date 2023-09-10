@@ -1,4 +1,4 @@
-package com.example.copy_n_sync
+package com.copy.sync
 import android.Manifest
 import android.app.Activity
 import android.content.ClipData
