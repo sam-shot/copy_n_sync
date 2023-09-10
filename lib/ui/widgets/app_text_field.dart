@@ -3,6 +3,7 @@
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextField extends StatelessWidget {
   String hintText;
@@ -35,20 +36,21 @@ class AppTextField extends StatelessWidget {
           obscureText: isPassword,
           controller: controller,
           focusNode: focusNode,
-          style: h4B.copyWith(fontSize: 15),
+          style: h4B.copyWith(fontSize: 12.sp, color: Colors.white70),
           onFieldSubmitted: onSubmitted,
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
             hintText: hintText,
+            hintStyle: h4B.copyWith(fontSize: 12.sp, color: Colors.white30),
             filled: true,
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: kSecondaryColor, width: 2)),
+                borderSide: const BorderSide(color: Colors.white70, width: 1)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: kPrimaryColor, width: 2)),
+                borderSide: BorderSide(color: kPrimaryColor, width: 1)),
             errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: kError, width: 2)),

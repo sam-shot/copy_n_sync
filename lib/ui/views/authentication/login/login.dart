@@ -43,7 +43,7 @@ class LoginView extends StatelessWidget with $LoginView {
                     "With Copy-N-Sync, sharing your clipboard has never been easier. Login to enjoy fast and efficient copying and pasting across all your devices",
                     style: p,
                   ),
-                  const S.height(20),
+                  const S.height(40),
                   Text(
                     "Email",
                     style: placeholder,
@@ -101,7 +101,7 @@ class LoginView extends StatelessWidget with $LoginView {
                       Container(
                         height: 1.5,
                         width: 100,
-                        color: kSecondaryColor,
+                        color: Colors.white70,
                       ),
                       const S.width(10),
                       Text(
@@ -112,7 +112,7 @@ class LoginView extends StatelessWidget with $LoginView {
                       Container(
                         height: 1.5,
                         width: 100,
-                        color: kSecondaryColor,
+                        color: Colors.white70,
                       ),
                     ],
                   ),

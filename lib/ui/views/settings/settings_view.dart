@@ -24,8 +24,8 @@ class SettingsView extends StatelessWidget {
             Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -55,6 +55,29 @@ class SettingsView extends StatelessWidget {
                   color: kPrimaryColor,
                   thickness: 1,
                 ),
+                InkWell(
+                  onTap: () {
+                    model.gotoDevices();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Devices Manager",
+                          style: p,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Divider(
+                  height: 1,
+                  color: kPrimaryColor,
+                  thickness: 1,
+                )
               ],
             ),
             const S.height(20),

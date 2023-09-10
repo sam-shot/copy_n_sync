@@ -1,10 +1,12 @@
 package com.example.copy_n_sync
 
-
-import android.content.Intent
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import io.flutter.embedding.android.FlutterActivity
 import okhttp3.Call
@@ -15,30 +17,26 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okio.IOException
 
-class ContextMenu : FlutterActivity() {
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
+class CopyTextActivity : FlutterActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(intent.action == Intent.ACTION_PROCESS_TEXT){
-            val selectedText = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT)
+        setContentView(R.layout.copy_text)
+        val copy = findViewById<Button>(R.id.butto)
+        copy.setOnClickListener {
+            val clipBoardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val copiedString = clipBoardManager.primaryClip?.getItemAt(0)?.text?.toString()
             val prefs = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE)
             val userId = prefs.getString("flutter."+"userId", "")
             val deviceId = prefs.getString("firebaseId", "")
 
             Log.d("Shared pref", userId + deviceId)
 
-            val jsonText = escapeString(selectedText!!)
+            val jsonText = escapeString(copiedString.toString())
             val postData = """{"userId" : "$userId","firebaseId":"$deviceId", "text":"$jsonText"}"""
-
-
-            if (userId == ""){
-                Handler(mainLooper).post{
-                    Toast.makeText(applicationContext, "YOU HAVE NOT LOGGED IN YET", Toast.LENGTH_SHORT).show()
-                }
+            Log.d("clip2", copiedString.toString())
+            if (userId == "") {
+                Toast.makeText(context, "YOU HAVE NOT LOGGED IN YET", Toast.LENGTH_SHORT).show()
             } else {
                 try {
                     val okHttpClient = OkHttpClient()
@@ -52,7 +50,7 @@ class ContextMenu : FlutterActivity() {
                         override fun onFailure(call: Call, e: IOException) {
                             Log.d("Error", e.toString())
                             Handler(mainLooper).post{
-                                Toast.makeText(applicationContext, e.toString(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
                             }
                             call.cancel()
                         }
@@ -60,7 +58,7 @@ class ContextMenu : FlutterActivity() {
                         override fun onResponse(call: Call, response: Response) {
                             Log.d("Success", response.toString())
                             Handler(mainLooper).post{
-                                Toast.makeText(applicationContext, "Text Synced ✅", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Text Synced ✅", Toast.LENGTH_SHORT).show()
                             }
                             call.cancel()
                         }
@@ -70,7 +68,19 @@ class ContextMenu : FlutterActivity() {
                 }
             }
 
-        finish()
+
+            finish()
+        }
+
+        val body = findViewById<View>(R.id.body)
+        body.setOnClickListener {
+            val clipBoardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val copiedString = clipBoardManager.primaryClip?.getItemAt(0)?.text?.toString()
+
+            Log.d("clip2", copiedString.toString())
+
+
+            finish()
         }
     }
     private fun escapeString(input: String): String {
@@ -87,4 +97,6 @@ class ContextMenu : FlutterActivity() {
         }
         return escapedString.toString()
     }
+
+
 }

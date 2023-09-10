@@ -15,6 +15,9 @@ class ServerService {
     required String name,
     required String username,
     required String email,
+    required String deviceName,
+    required String firebaseId,
+
     required String password,
   }) async {
     const route = "/auth/register";
@@ -22,6 +25,8 @@ class ServerService {
       return _apiService.post(route: route, body: {
         "name": name,
         "username": username,
+        "deviceName": deviceName,
+        "firebaseId": firebaseId,
         "email": email,
         "password": password
       });
@@ -52,6 +57,18 @@ class ServerService {
     const route = "/get/userdetail";
     final response = await _networkService.fmt(() {
       return _apiService.get(route: route, queryParameters: {"id": id});
+    });
+    return response.fold((l) => l, (r) {
+      log.v("Server created : $response");
+      return r;
+    });
+  }
+  Future getDevices({
+    required String id,
+  }) async {
+    const route = "/user/devices";
+    final response = await _networkService.fmt(() {
+      return _apiService.get(route: route, queryParameters: {"userId": id});
     });
     return response.fold((l) => l, (r) {
       log.v("Server created : $response");
@@ -132,7 +149,7 @@ class ServerService {
     required String text,
     required String id,
   }) async {
-    const route = "/send/text";
+    const route = "/send/text/history";
     final response = await _networkService.fmt(() {
       return _apiService.post(route: route, body: {
         "text": text,
@@ -182,6 +199,20 @@ class ServerService {
     final response = await _networkService.fmt(() {
       return _apiService
           .post(route: route, body: {"token": token, "password": password});
+    });
+    return response.fold((l) => l, (r) {
+      log.v("Server created : $response");
+      return r;
+    });
+  }
+  Future removeDevice({
+    required String deviceId,
+    required String userId,
+  }) async {
+    const route = "/user/removeDevice";
+    final response = await _networkService.fmt(() {
+      return _apiService
+          .post(route: route, body: {"deviceId": deviceId, "userId": userId});
     });
     return response.fold((l) => l, (r) {
       log.v("Server created : $response");

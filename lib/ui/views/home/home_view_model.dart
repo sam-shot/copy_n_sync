@@ -90,7 +90,7 @@ class HomeViewModel extends FormViewModel {
   sendHistory(String data) async {
     SetLoading(true);
     final res = await _server.sendHistory(text: data, id: id);
-    SetLoading(false);
+    _nav.back();
   }
 
   selectFile(void Function(void Function()) setState) async {

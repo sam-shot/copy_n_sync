@@ -19,7 +19,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await setupLocator();
   setupDialogUi();
-  final pref = locator<SharedPreferencesService>();
   if (defaultTargetPlatform == TargetPlatform.android) {
     const androidConfig = FlutterBackgroundAndroidConfig(
       notificationTitle: "flutter_background example app",
@@ -84,7 +83,7 @@ class MainApp extends StatelessWidget {
           onGenerateRoute: StackedRouter().onGenerateRoute,
           theme: ThemeData(
 
-              scaffoldBackgroundColor: Colors.white.withOpacity(0.06)),
+              scaffoldBackgroundColor: Colors.white.withOpacity(0.1)),
           navigatorKey: StackedService.navigatorKey,
         );
       },

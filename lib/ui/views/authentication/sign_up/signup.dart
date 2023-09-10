@@ -131,7 +131,7 @@ class SignUpView extends StatelessWidget with $SignUpView {
                       Container(
                         height: 1.5,
                         width: 100,
-                        color: kSecondaryColor,
+                        color: Colors.white70,
                       ),
                       const S.width(10),
                       Text(
@@ -142,7 +142,7 @@ class SignUpView extends StatelessWidget with $SignUpView {
                       Container(
                         height: 1.5,
                         width: 100,
-                        color: kSecondaryColor,
+                        color: Colors.white70,
                       ),
                     ],
                   ),

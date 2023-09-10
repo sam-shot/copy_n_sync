@@ -51,7 +51,7 @@ class _SuccessDialogState extends State<SuccessDialog> {
                         children: [
                           Image.asset(AppAsset.logo),
                           S.height(15),
-                          Text("Successful, please Login!", style: h3, textAlign: TextAlign.center,)
+                          Text("Successful, please Login!", style: h3.copyWith(color: Colors.black), textAlign: TextAlign.center,)
                         ],
                       ),
                     )))));

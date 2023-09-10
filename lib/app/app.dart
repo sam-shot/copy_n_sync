@@ -15,6 +15,8 @@ import 'package:copy_n_sync/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../ui/views/devices_view/devices_view.dart';
+
 @StackedApp(
   routes: [
     AdaptiveRoute(page: StartupView, initial: true),
@@ -24,6 +26,7 @@ import 'package:stacked_services/stacked_services.dart';
     CupertinoRoute(page: HomeView),
     CupertinoRoute(page: BottomNavigationView),
     CupertinoRoute(page: SettingsView),
+    CupertinoRoute(page: DevicesView),
     CupertinoRoute(page: EnterEmail),
     CupertinoRoute(page: VerifyToken),
     CupertinoRoute(page: CreatePassword),

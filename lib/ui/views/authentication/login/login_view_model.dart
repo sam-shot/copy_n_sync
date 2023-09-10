@@ -47,7 +47,7 @@ class LoginViewModel extends FormViewModel {
           _prefs.saveData("userName", data.data!.name!);
           _prefs.saveData("syncOption", true);
 
-          if (defaultTargetPlatform == TargetPlatform.android) {
+          if (defaultTargetPlatform == TargetPlatform.android ) {
             try {
               String deviceId =
                   await kotlinChannel.invokeMethod('getFirebaseId');
@@ -68,9 +68,8 @@ class LoginViewModel extends FormViewModel {
                   _prefs.saveData("deviceId", deviceId);
                   SetLoading(false);
                   snackbar.showSnackbar(message: data.message!);
-                  SocketService.instance.initialize(data.data!.id!);
-                  SocketService.instance.connect();
-                  _navigation.replaceWith(Routes.homeView);
+                  _prefs.saveData("fromlogin", true);
+                  _navigation.replaceWith(Routes.devicesView);
                 }
               } else {
                 SetLoading(false);
@@ -82,9 +81,8 @@ class LoginViewModel extends FormViewModel {
           } else {
             SetLoading(false);
             snackbar.showSnackbar(message: data.message!);
-            SocketService.instance.initialize(data.data!.id!);
-            SocketService.instance.connect();
-            _navigation.replaceWith(Routes.bottomNavigationView);
+            _prefs.saveData("fromlogin", true);
+            _navigation.replaceWith(Routes.devicesView);
           }
         } else {
           snackbar.showSnackbar(message: data.message!);

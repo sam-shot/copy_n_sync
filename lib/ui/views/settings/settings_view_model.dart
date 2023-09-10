@@ -16,6 +16,11 @@ class SettingsViewModel extends BaseViewModel {
     AwesomeNotifications().cancelAll();
   }
 
+  void gotoDevices(){
+    
+    _navigation.replaceWith(Routes.devicesView);
+  }
+
   changeSyncOption(bool value) {
     isAutomatic = value;
     _pref.saveData("syncOption", value);

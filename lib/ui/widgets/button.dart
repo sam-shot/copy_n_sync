@@ -33,7 +33,7 @@ class CustomButton extends StatelessWidget {
           color: isOutlined
               ? kWhite
               : isPrimary
-                  ? kPrimaryColor.withOpacity(0.25)
+                  ? kPrimaryColor.withOpacity(0.3)
                   : kSecondaryColor,
           borderRadius: BorderRadius.circular(10),
           border: isOutlined
@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
                           ? Text(
                               text,
                               style: h4B.copyWith(
-                                  color: Colors.white, fontSize: 13.sp),
+                                  color: Colors.black87, fontSize: 13.sp),
                             )
                           : isPrimary
                               ? Text(
@@ -73,7 +73,7 @@ class CustomButton extends StatelessWidget {
                     ? Text(
                         text,
                         style:
-                            h4B.copyWith(color: Colors.white, fontSize: 13.sp),
+                            h4B.copyWith(color: Colors.black87, fontSize: 13.sp),
                       )
                     : isPrimary
                         ? Text(
