@@ -13,20 +13,25 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_CLIPBOARD" />
 
-
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:label="Copy N Sync"
         android:requestLegacyExternalStorage="true">
         <activity
+            android:name=".ReceiveTextActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.example.receive_text"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true" />
+        <activity
             android:name=".CopyTextActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity="com.example.sync_text"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="com.copy.sync.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
@@ -49,9 +54,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.copy.sync.ContextMenu"
+            android:name=".ContextMenu"
             android:exported="true"
             android:label="Copy n Sync"
             android:theme="@android:style/Theme.NoDisplay">
@@ -64,7 +68,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.copy.sync.SendFileMenu"
+            android:name=".SendFileMenu"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
@@ -75,17 +79,17 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity> <!-- FCM -->
-
         <receiver
-            android:name="com.copy.sync.BootCompletedListener"
+            android:name=".BootCompletedListener"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service
-            android:name="com.copy.sync.MyFirebaseMessagingService"
+            android:name=".MyFirebaseMessagingService"
             android:exported="false"
             tools:ignore="Instantiatable">
             <intent-filter>

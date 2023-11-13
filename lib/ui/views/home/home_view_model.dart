@@ -2,13 +2,11 @@
 
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/app/app.router.dart';
 import 'package:copy_n_sync/core/models/all_texts/all_texts.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
-import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/ui/shared/loading_status.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
@@ -57,29 +55,13 @@ class HomeViewModel extends FormViewModel {
     notifyListeners();
   }
 
-  openNotification() {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 10,
-        channelKey: "Copy n Sync",
-        title: "Sync Acrosss your Devices",
-        body: "Tap here to send Copied Text",
-        autoDismissible: false,
-        notificationLayout: NotificationLayout.Default,
-        payload: {"send": "true"},
-        locked: true,
-      ),
-    );
-  }
+
 
   Future init() async {
     id = _pref.getData("userId");
     getUserDetail();
     setBusy(true);
     await getAllTexts();
-    openNotification();
-    await AwesomeNotifications()
-        .setListeners(onActionReceivedMethod: onActionReceivedMethod);
     setBusy(false);
   }
 
@@ -127,21 +109,7 @@ class HomeViewModel extends FormViewModel {
 
   static const clipboardChannel = MethodChannel('clipboard');
 
-  static Future<void> onActionReceivedMethod(
-      ReceivedAction receivedAction) async {
-    final payload = receivedAction.payload ?? {};
-    if (payload["send"] == "true") {
-      String data;
-      try {
-        data = await clipboardChannel.invokeMethod('getClipData');
-        SocketService.instance
-            .send(_instance!.id, message: data, fromHistory: false);
-        _instance!.allTexts.insert(
-            0, {"text": data, "time": _instance!.formatDate(DateTime.now())});
-        _instance!.notifyListeners();
-      } on PlatformException {}
-    }
-  }
+
 
   void goToSettings() {
     _nav.navigateTo(Routes.settingsView);

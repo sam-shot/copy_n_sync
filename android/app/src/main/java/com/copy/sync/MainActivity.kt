@@ -31,7 +31,6 @@ class MainActivity: FlutterActivity() {
     private var methodChannel: MethodChannel? = null
     private lateinit var clipboardManager: ClipboardManager
 
-    private val WRITE_STORAGE_PERMISSION_REQUEST_CODE = 123
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -89,30 +88,19 @@ class MainActivity: FlutterActivity() {
         methodChannel!!.setMethodCallHandler(null)
     }
 
-    private fun requestPermission() {
-        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        if (ContextCompat.checkSelfPermission(this, permission)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(permission),
-                WRITE_STORAGE_PERMISSION_REQUEST_CODE
-            )
-        } else {
-        }
-    }
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel(context, "Sync Text", "Sync Latest Clipboard", "")
+        createNotificationChannel(context, "Download_File", "Download File", "")
 
-        requestPermission()
+
+
 
         val notificationIntent = Intent(context, CopyTextActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(context, "Sync Text")
             .setContentTitle("Sync Across your Devices")
@@ -123,27 +111,9 @@ class MainActivity: FlutterActivity() {
             .setAutoCancel(false)
             .build()
         NotificationManagerCompat.from(applicationContext).notify(4, notification)
-        val mediaScannerConnectionClient = object :
-            MediaScannerConnection.MediaScannerConnectionClient {
-            override fun onMediaScannerConnected() {
-                val tempDir = File(Environment.getExternalStorageDirectory(), "Copy N Sync").toString()
 
-                Log.e(tempDir.toString(), "Sacn naa")
-                MediaScannerConnection.scanFile(context,
-                    arrayOf(arrayOf(tempDir).toString()), null) { path, uri ->
-                }
-            }
 
-            override fun onScanCompleted(path: String?, uri: android.net.Uri?) {
-                // Handle scan completion, if needed
 
-                Log.e("Scan complete oo", "Sacn naa")
-            }
-        }
-
-// Create and connect the MediaScannerConnection
-        val mediaScannerConnection = MediaScannerConnection(context, mediaScannerConnectionClient)
-        mediaScannerConnection.connect()
 
     }
 

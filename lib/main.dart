@@ -1,11 +1,10 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
 import 'package:copy_n_sync/ui/shared/colors.dart';
 import 'package:copy_n_sync/ui/shared/dialog/setup_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,20 +18,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await setupLocator();
   setupDialogUi();
-  if (defaultTargetPlatform == TargetPlatform.android) {
-    const androidConfig = FlutterBackgroundAndroidConfig(
-      notificationTitle: "flutter_background example app",
-      notificationText:
-          "Background notification for keeping the example app running in the background",
-      notificationImportance: AndroidNotificationImportance.Max,
-      notificationIcon: AndroidResource(
-          name: 'background_icon',
-          defType: 'drawable'), // Default is ic_launcher from folder mipmap
-    );
 
-    await FlutterBackground.initialize(androidConfig: androidConfig);
-    FlutterBackground.enableBackgroundExecution();
-  }
   if (defaultTargetPlatform == TargetPlatform.windows) {
     await windowManager.ensureInitialized();
 
@@ -53,14 +39,7 @@ void main() async {
       await windowManager.focus();
     });
   }
-  AwesomeNotifications().initialize('resource://drawable/notify', [
-    NotificationChannel(
-        channelKey: "Copy n Sync",
-        channelName: "Copy n Sync",
-        importance: NotificationImportance.Max,
-        criticalAlerts: true,
-        channelDescription: "Copy n Sync")
-  ]);
+
 
   runApp(const MainApp());
 }

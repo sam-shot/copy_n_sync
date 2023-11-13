@@ -2,7 +2,6 @@ import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/core/models/login/login_model.dart';
 import 'package:copy_n_sync/core/services/server_service.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
-import 'package:copy_n_sync/core/services/socket_service.dart';
 import 'package:copy_n_sync/core/util/validation.dart';
 import 'package:copy_n_sync/ui/shared/loading_status.dart';
 import 'package:copy_n_sync/ui/views/authentication/login/login.form.dart';

@@ -1,4 +1,4 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+
 import 'package:copy_n_sync/app/app.locator.dart';
 import 'package:copy_n_sync/app/app.router.dart';
 import 'package:copy_n_sync/core/services/shared_preferences.dart';
@@ -13,7 +13,6 @@ class SettingsViewModel extends BaseViewModel {
   void logout() {
     _pref.deleteData("userId");
     _navigation.replaceWith(Routes.loginView);
-    AwesomeNotifications().cancelAll();
   }
 
   void gotoDevices(){

@@ -74,4 +74,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 }

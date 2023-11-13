@@ -13,7 +13,7 @@ class BootCompletedListener : BroadcastReceiver() {
             val notificationIntent = Intent(context, CopyTextActivity::class.java)
             notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-            val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
             val notification = context?.let {
                 NotificationCompat.Builder(it, "Sync Text")
